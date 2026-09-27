@@ -11,8 +11,8 @@ Implements the **Caesar** and **simple substitution** ciphers from scratch, then
 |---|---|
 | Caesar breaker (chi-squared) accuracy | **93%** at 20 letters, **100%** from 50 letters (300 trials per length) |
 | Naive "most common letter = E" baseline | 34% at 20 letters, 67% at 100 letters |
-| Substitution: frequency ranking only | 42.6% of ciphertext letters recovered |
-| + common words *THE* / *AND* | 51.7% |
+| Substitution: frequency ranking only | 42.8% of ciphertext letters recovered |
+| + common words *THE* / *AND* | 51.8% |
 | + one known word ("encryption") | **89.4%**, readable plaintext with no brute force |
 | Key space | Caesar 25 (~4.6 bits) vs substitution 26! ≈ 4×10²⁶ (~88 bits) |
 
