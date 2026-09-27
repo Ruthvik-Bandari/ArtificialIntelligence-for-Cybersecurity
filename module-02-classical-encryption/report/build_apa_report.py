@@ -16,9 +16,9 @@ from PIL import Image
 TITLE = "Building and Breaking Classical Ciphers: A Comparison of Caesar and Substitution Encryption"
 AUTHOR = "Ruthvik Nath Bandari"
 AFFILIATION = "Northeastern University"
-COURSE = "[Course Number]: AI for Cybersecurity"
-INSTRUCTOR = "[Instructor Name]"
-DUE_DATE = "[Due Date]"
+COURSE = "AAI6680: AI for Cybersecurity"
+INSTRUCTOR = "Mimoza Dimodugno, PhD"
+DUE_DATE = "September 27, 2026"
 # -----------------------------------------------------------------------------------------------
 
 HERE = Path(__file__).resolve().parent
