@@ -135,18 +135,19 @@ def notes(slide, body):
 s = prs.slides.add_slide(BLANK)
 rect(s, 0, 0, SW, SH, NAVY)
 rect(s, MARGIN, 1.55, 0.9, 0.08, RED)
-text(s, MARGIN, 1.85, 11.5, 1.8, "153 Million Driver’s Licenses for Sale", size=48, color=WHITE, bold=True, spacing=1.0)
-text(s, MARGIN, 2.9, 11.5, 1.0, "A CIA triad analysis of the IDScan.net breach behind the Nexus identity-theft service",
-     size=24, color=RGBColor(0xC9, 0xD3, 0xE0), spacing=1.1)
-text(s, MARGIN, 4.75, 8, 1.2, ["**Ruthvik Nath Bandari**",
+text(s, MARGIN, 1.8, 11.5, 1.7, ["153 Million Driver’s Licenses", "Advertised for Sale"], size=46, color=WHITE, bold=True, spacing=1.0, after=0)
+text(s, MARGIN, 3.55, 12.2, 1.0, "A CIA triad analysis of the Nexus ID-theft service and the confirmed IDScan.net breach",
+     size=22, color=RGBColor(0xC9, 0xD3, 0xE0), spacing=1.1)
+text(s, MARGIN, 4.85, 8, 1.2, ["**Ruthvik Nath Bandari**",
                                 "AAI6680: AI for Cybersecurity · Northeastern University",
                                 "Mimoza Dimodugno, PhD · September 2026"],
      size=16, color=RGBColor(0xC9, 0xD3, 0xE0), after=4)
 text(s, MARGIN, SH - 0.8, 12, 0.4, "Case source: Krebs, B. (2026, September 1). FBI probes service selling 153M+ drivers licenses. Krebs on Security.",
      size=11, color=RGBColor(0x8A, 0x97, 0xA8), italic=True)
 notes(s, """This presentation analyses a breach reported by Brian Krebs on September 1, 2026. A dark-web service
-called Nexus was selling scans of more than 153 million U.S. and Canadian driver's licenses, and the
-evidence pointed to IDScan.net, an identity verification vendor. I will summarise the incident, map it to
+called Nexus advertised scans of more than 153 million U.S. and Canadian driver's licenses. Krebs traced
+the samples he could verify to IDScan.net, an identity verification vendor, which later confirmed a breach;
+the article does not establish that every advertised record came from that one company. I will summarise the incident, map it to
 the CIA triad, explain why confidentiality was hit hardest, and recommend an AI-based control from
 Chapter 5 together with a current industry trend that would have reduced the damage.""")
 
@@ -154,8 +155,8 @@ Chapter 5 together with a current industry trend that would have reduced the dam
 s = prs.slides.add_slide(BLANK)
 header(s, "A year-long data drain at an ID-verification vendor", "The incident · threat: data exfiltration for identity fraud")
 rows = [
-    ("WHO", "**IDScan.net**, an ID-verification vendor for Hertz, retailers and 1,000+ dispensaries. "
-            "Victims: **153M+** U.S. and Canadian license holders."),
+    ("WHO", "Nexus advertised **153M+** licenses. Krebs traced verified samples to **IDScan.net**, an "
+            "ID-verification vendor for Hertz, retailers and 1,000+ dispensaries."),
     ("WHAT", "“Nexus,” a dark-web shop selling license scans (front, back, infrared, ultraviolet)."),
     ("WHEN", "Scans from **June 2025** onward; advertised **Aug. 31, 2026**."),
     ("HOW", "“Continuously exfiltrating new data for **over a year**”: ~400K new records in one day."),
@@ -177,7 +178,7 @@ text(s, tx, 1.85, 4.0, 0.3, "TIMELINE", size=12, color=MUTED, bold=True)
 events = [("Jun 2025", "Earliest matched scan timestamps", MUTED),
           ("Aug 31, 2026", "Nexus listed on the Exploit forum", AMBER),
           ("Sep 1, 2026", "FBI opens an investigation", ACCENT),
-          ("Sep 8, 2026", "IDScan.net confirms the breach", RED)]
+          ("Sep 8, 2026", "IDScan.net confirms unauthorized access", RED)]
 line(s, tx + 0.12, 2.45, tx + 0.12, 6.05, RULE, 2)
 ey = 2.35
 for date, desc, col in events:
@@ -187,11 +188,12 @@ for date, desc, col in events:
     ey += 1.0
 footer(s, "Source: Krebs (2026), including the Sept. 8 update.", 2)
 notes(s, """Who: IDScan.net verifies IDs for Hertz, Target, FedEx and more than a thousand cannabis dispensaries,
-running over 21 million verifications a month. What: the Nexus service listed over 153 million driver's
+running over 21 million verifications a month. What: the Nexus service advertised over 153 million driver's
 licenses, more than 10 million ID cards, three million travel documents and 579,000 medical cards, often
 with infrared and ultraviolet images. When: Krebs matched image timestamps to trips as early as June 2025;
 Nexus was advertised on August 31, 2026, the FBI opened an inquiry on September 1, and IDScan confirmed
-unauthorized access on September 8. How: the attackers claimed continuous exfiltration for over a year,
+unauthorized access on September 8. Krebs verified the link to IDScan through nine people whose records
+matched their trips; the full 153 million figure is the sellers' own claim. How: the attackers claimed continuous exfiltration for over a year,
 and the record count grew by about 400,000 in a single day. The threat is data theft for identity fraud;
 the impact includes identity and credit fraud, IDScan's notification and credit-protection costs, an FBI
 investigation, and exposure of senior officials such as the U.S. Defense Secretary.""")
@@ -212,7 +214,7 @@ for letter, nx, ny, col in nodes:
          align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, after=0)
 # callouts (right)
 cards = [("CONFIDENTIALITY", "SEVERE", RED,
-          "153M+ license images copied and sold, including those of the U.S. Defense Secretary and an FBI assistant director."),
+          "Nexus advertised 153M+ license images; records for sale include the U.S. Defense Secretary’s and an FBI assistant director’s."),
          ("INTEGRITY", "MODERATE", AMBER,
           "No sign IDScan’s records were altered, but forgery-grade IR/UV scans let criminals pass other firms’ ID checks, so a “verified” ID no longer proves identity."),
          ("AVAILABILITY", "LOW", TEAL,
@@ -228,7 +230,8 @@ for name, sev, col, body in cards:
     cy += 1.65
 footer(s, "Diagram: author’s analysis of Krebs (2026). Severity reflects scale, reversibility and downstream harm.", 3)
 notes(s, """This diagram maps the attack onto the triad. The attack vector is the long-running exfiltration
-in the centre. Confidentiality is severe: more than 153 million identity images were copied and sold.
+in the centre. Confidentiality is severe: Nexus advertised more than 153 million identity images, and Krebs verified
+that real, matching records were for sale.
 Integrity is moderate: Krebs reports no evidence that IDScan's stored records were altered, so the harm
 is downstream. The stolen scans include the infrared and ultraviolet images that verifiers check, so
 criminals can make convincing forgeries and open fraudulent accounts elsewhere, which undermines the trust
@@ -239,8 +242,8 @@ verification while the vendor investigates.""")
 # ---- slide 4: most severe ---------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK)
 header(s, "Confidentiality was hit hardest: identity can’t be reset", "Most severe impact")
-for i, (big, small, col) in enumerate([("153M+", "driver’s license records exposed", RED),
-                                       ("1+ year", "of exfiltration before it was detected", NAVY)]):
+for i, (big, small, col) in enumerate([("153M+", "license records advertised; Krebs verified a sample", RED),
+                                       ("1+ year", "of exfiltration claimed; scans date to June 2025", NAVY)]):
     yy = 1.85 + i * 2.25
     rect(s, MARGIN, yy, 4.6, 1.95, LIGHT, shape=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.06)
     text(s, MARGIN + 0.35, yy + 0.25, 4.0, 0.9, big, size=54, color=col, bold=True, after=0, spacing=1.0)
@@ -283,7 +286,8 @@ for i, (head, body) in enumerate(steps):
         a.fill.solid(); a.fill.fore_color.rgb = ACCENT; a.line.fill.background()
 panels = [("APPLIED TO THIS BREACH", ACCENT,
            "An account that normally reads few images starts sending ~400K records a day to a new host. "
-           "That falls far outside its baseline, so it is **cut off within hours, not after a year**."),
+           "That falls far outside its baseline, so it **could be flagged within hours**, given log coverage, "
+           "tuned thresholds and automated response."),
           ("LESSON FROM MY MODULE 1 LAB", RED,
            "My benign-only GMM reached **ROC-AUC 0.966** on CIC-IDS-2017 but missed attacks that look "
            "normal flow by flow. Slow leaks need **per-account baselines over days** (UEBA).")]
@@ -298,18 +302,20 @@ directly. The detector learns what normal outbound activity looks like for each 
 features such as bytes sent, records read, destination and time of day, and fits a Gaussian or Gaussian
 mixture density. Activity with very low probability is flagged, and a SOAR playbook can revoke the token
 and block the destination. In this breach, an account suddenly moving hundreds of thousands of license
-images a day would stand out and be stopped in hours. My Module 1 lab adds a caveat: my benign-only
+images a day would likely stand out. Whether it is stopped within hours depends on having logs for the
+image store, well-tuned thresholds and an automated response, so I present that as a plausible outcome
+rather than a guarantee. My Module 1 lab adds a caveat: my benign-only
 mixture model scored ROC-AUC 0.966, but it missed attacks that look normal one flow at a time. So the
 detector must aggregate per account over days, which is how commercial UEBA and network detection
 platforms work today. This makes the control realistic for current industry practice.""")
 
 # ---- slide 6: current trend -------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK)
-header(s, "Trend: mobile IDs shrink what there is to steal", "Current trend · data minimization")
+header(s, "Trend: mobile IDs can shrink what there is to steal", "Current trend · data minimization")
 cols = [("TODAY: SCAN AND STORE", RED, ["Physical license scanned", "Vendor keeps the full image: front, back, IR, UV",
                                         "A breach leaks a reusable identity"]),
         ("MOBILE ID (ISO/IEC 18013-5)", TEAL, ["Phone shares a state-signed credential", "Verifier asks only “age over 21?” and gets yes/no",
-                                                "A breach leaks a signed answer, not an identity"])]
+                                                "Less to leak, if the verifier does not retain data"])]
 for i, (head, col, items) in enumerate(cols):
     px = MARGIN + i * 3.45
     rect(s, px, 1.8, 3.2, 4.05, LIGHT, shape=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.05)
@@ -324,7 +330,7 @@ for i, (head, col, items) in enumerate(cols):
         iy += 1.15
 bullets(s, 7.75, 1.9, 5.0, 3.2, [
     "**The trend:** mobile driver’s licenses (ISO/IEC 18013-5). TSA accepts digital IDs at 250+ airports and “sees only the necessary information.”",
-    "**Mitigation link:** verifiers never hold an image, so a breach like IDScan’s yields nothing reusable.",
+    "**Mitigation link:** verifiers can receive only what they need. The benefit depends on retention: ISO/IEC 18013-5 leaves storage rules out of scope.",
     "**With the AI control:** minimize what is stored, then monitor what remains.",
 ], size=16, after=14, marker_color=TEAL)
 text(s, 7.75, 5.35, 5.0, 1.0, "“We don’t have nearly the oversight to ensure they are safe.”  Z. Edwards, privacy researcher, in Krebs (2026)",
@@ -334,8 +340,9 @@ notes(s, """The current trend I connect to mitigation is the shift to mobile dri
 disclosure, standardised in ISO/IEC 18013-5. TSA already accepts digital IDs at more than 250 airports and says it
 sees only the information it needs. Instead of photocopying a physical card, the verifier asks the
 phone a narrow question, such as whether the holder is over 21, and receives a cryptographically signed
-yes or no from the issuing state. Nothing reusable needs to be stored, so a breach of the verifier yields
-no identity documents. This is data minimization in practice, and it answers the oversight gap the privacy
+yes or no from the issuing state. That reduces what the verifier receives, but the benefit depends on
+implementation: ISO/IEC 18013-5 leaves requirements for storing mDL data out of scope, so verifiers still
+need retention limits for a breach to yield less. This is data minimization in practice, and it answers the oversight gap the privacy
 researcher Zach Edwards raised in the article. It pairs with the AI control: minimization shrinks what can
 be stolen, and anomaly detection shrinks how long a thief has to steal what remains.""")
 

@@ -13,7 +13,7 @@ Hands-on labs from the **AI for Cybersecurity** course at Northeastern Universit
 |---|---|---|---|
 | 1 | [Network intrusion detection](module-01-intrusion-detection/) | An unsupervised anomaly-detection IDS on CIC-IDS-2017 (2.8M flows), using a Gaussian and a Gaussian Mixture density model trained on benign traffic only | ROC-AUC **0.966**, PR-AUC **0.930**; catches 7/14 attack families at >90% recall without seeing a single attack |
 | 2 | [Classical encryption & cryptanalysis](module-02-classical-encryption/) | Caesar and substitution ciphers, plus an automated chi-squared breaker, frequency analysis and a known-plaintext attack | Breaks Caesar with **100%** accuracy from 50 letters; recovers **89.4%** of a substitution ciphertext without brute force |
-| 2 | [CIA triad threat analysis](module-02-cia-triad-analysis/) | A 7-slide analysis of the 2026 IDScan.net breach (153M+ driver's licenses), mapped to the CIA triad, with an AI egress anomaly-detection control | Traces the year-long leak to confidentiality loss and shows why per-account baselines (UEBA) beat per-flow models for slow exfiltration |
+| 2 | [CIA triad threat analysis](module-02-cia-triad-analysis/) | A 7-slide analysis of the 2026 Nexus / IDScan.net breach (153M+ driver's licenses advertised), mapped to the CIA triad, with an AI egress anomaly-detection control | Traces the year-long leak to confidentiality loss and shows why per-account baselines (UEBA) beat per-flow models for slow exfiltration |
 
 Each folder has its own README covering results, figures and how to run or rebuild the work.
 

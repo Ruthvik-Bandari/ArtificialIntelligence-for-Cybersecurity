@@ -1,6 +1,6 @@
-# Module 2 Assignment: CIA Triad Analysis of the IDScan.net Breach
+# Module 2 Assignment: CIA Triad Analysis of the Nexus / IDScan.net Breach
 
-A 7-slide threat analysis of a real 2026 incident reported by Krebs on Security. A dark-web service called **Nexus** sold scans of **153M+ U.S. and Canadian driver's licenses**, taken in a year-long, low-and-slow data exfiltration from the ID-verification vendor IDScan.net.
+A 7-slide threat analysis of a real 2026 incident reported by Krebs on Security. A dark-web service called **Nexus** advertised scans of **153M+ U.S. and Canadian driver's licenses**, claiming a year-long exfiltration. Krebs traced verified samples to the ID-verification vendor IDScan.net, which confirmed unauthorized access.
 
 **Slides (PDF):** [`Ruthvik_Nath_Bandari_Module2_CIA_Triad_Analysis.pdf`](Ruthvik_Nath_Bandari_Module2_CIA_Triad_Analysis.pdf)
 **Slides (PowerPoint, with speaker notes):** [`Ruthvik_Nath_Bandari_Module2_CIA_Triad_Analysis.pptx`](Ruthvik_Nath_Bandari_Module2_CIA_Triad_Analysis.pptx)
@@ -9,13 +9,13 @@ A 7-slide threat analysis of a real 2026 incident reported by Krebs on Security.
 
 | CIA element | Severity | Why |
 |---|---|---|
-| Confidentiality | **Severe** | 153M+ license images (front, back, IR, UV) copied and sold; unlike passwords, identity data can't be reset |
+| Confidentiality | **Severe** | 153M+ license images (front, back, IR, UV) advertised, with verified samples for sale; unlike passwords, identity data can't be reset |
 | Integrity | Moderate | No sign stored records were altered, but forgery-grade scans let criminals pass other firms' ID checks |
 | Availability | Low | No reported outage; indirect cost from credit freezes and re-verification |
 
-**Recommended control:** AI-based egress anomaly detection (Parisi, 2019, Ch. 5). The detector learns a per-account baseline of outbound data, scores it with a Gaussian mixture density, and cuts off low-probability activity. This connects to a lesson from [Module 1](../module-01-intrusion-detection/): per-flow models miss slow leaks, so baselines must span days (UEBA).
+**Recommended control:** AI-based egress anomaly detection (Parisi, 2019, Ch. 5). The detector learns a per-account baseline of outbound data, scores it with a Gaussian mixture density, and flags low-probability activity for automated response. This connects to a lesson from [Module 1](../module-01-intrusion-detection/): per-flow models miss slow leaks, so baselines must span days (UEBA).
 
-**Current trend:** mobile driver's licenses (ISO/IEC 18013-5) with selective disclosure. The verifier receives a signed "over 21: yes" instead of an image, so a breach leaks nothing reusable.
+**Current trend:** mobile driver's licenses (ISO/IEC 18013-5) with selective disclosure. The verifier can receive a signed "over 21: yes" instead of an image. That reduces exposure only if verifiers also limit retention, since ISO/IEC 18013-5 leaves storage rules out of scope.
 
 ## Slides
 
