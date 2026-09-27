@@ -1,0 +1,18 @@
+# Python / Jupyter
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+.vscode/
+
+# Datasets: too large for git, and redistributed only by their owners.
+# See each module's README for download instructions.
+*.zip
+**/cicids/
+
+# Local tooling and scratch output
+.gstack/
+**/tmp/

@@ -1,0 +1,24 @@
+# Shared environment for all "AI for Cybersecurity" weekly labs.
+# Install:  ./.venv/bin/python -m pip install -r requirements.txt
+
+# Core numerical / data stack
+numpy
+pandas
+scipy
+pyarrow            # parquet engine for pandas
+
+# Modeling
+scikit-learn
+
+# Plotting
+matplotlib
+seaborn
+
+# Notebook runtime
+ipykernel
+jupyterlab
+nbformat
+nbconvert
+
+# Presentation build (Module 1.6 deck)
+python-pptx
