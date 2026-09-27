@@ -213,8 +213,8 @@ for letter, nx, ny, col in nodes:
 # callouts (right)
 cards = [("CONFIDENTIALITY", "SEVERE", RED,
           "153M+ license images copied and sold, including those of the U.S. Defense Secretary and an FBI assistant director."),
-         ("INTEGRITY", "HIGH", AMBER,
-          "Forgery-grade IR/UV scans let criminals pass ID checks and open fraudulent credit, so a “verified” ID no longer proves who someone is."),
+         ("INTEGRITY", "MODERATE", AMBER,
+          "No sign IDScan’s records were altered, but forgery-grade IR/UV scans let criminals pass other firms’ ID checks, so a “verified” ID no longer proves identity."),
          ("AVAILABILITY", "LOW", TEAL,
           "No reported outage. Indirect loss: victims freeze credit, and clients must pause or redo verification.")]
 cy = 1.75
@@ -229,9 +229,10 @@ for name, sev, col, body in cards:
 footer(s, "Diagram: author’s analysis of Krebs (2026). Severity reflects scale, reversibility and downstream harm.", 3)
 notes(s, """This diagram maps the attack onto the triad. The attack vector is the long-running exfiltration
 in the centre. Confidentiality is severe: more than 153 million identity images were copied and sold.
-Integrity is high: the stolen scans include the infrared and ultraviolet images that verifiers check, so
-criminals can make convincing forgeries and open fraudulent accounts, which breaks the trust that a
-verified ID proves identity. Availability is low: Krebs reports no outage of IDScan's service, but there is
+Integrity is moderate: Krebs reports no evidence that IDScan's stored records were altered, so the harm
+is downstream. The stolen scans include the infrared and ultraviolet images that verifiers check, so
+criminals can make convincing forgeries and open fraudulent accounts elsewhere, which undermines the trust
+that a verified ID proves identity. Availability is low: Krebs reports no outage of IDScan's service, but there is
 indirect loss, because victims must freeze their credit and business clients may have to pause or repeat
 verification while the vendor investigates.""")
 
@@ -267,6 +268,9 @@ steps = [("1  Collect", "Flow and storage-access logs per service account"),
          ("3  Score", "Gaussian / GMM density: low p(x) = anomaly (Parisi, 2019, ch. 5)"),
          ("4  Respond", "Alert, revoke the token, block the destination")]
 bw, gap, by = 2.75, 0.33, 1.8
+text(s, MARGIN, 3.65, SW - 2 * MARGIN, 0.3,
+     "**Current industry practice:** commercial UEBA and network detection and response (NDR) platforms flag exfiltration this way.",
+     size=12.5, color=MUTED, after=0)
 for i, (head, body) in enumerate(steps):
     bx = MARGIN + i * (bw + gap)
     rect(s, bx, by, bw, 1.75, NAVY if i == 2 else LIGHT, shape=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.06)
@@ -285,9 +289,9 @@ panels = [("APPLIED TO THIS BREACH", ACCENT,
            "normal flow by flow. Slow leaks need **per-account baselines over days** (UEBA).")]
 for i, (head, col, body) in enumerate(panels):
     px = MARGIN + i * 6.2
-    rect(s, px, 4.0, 0.08, 1.45, col)
-    text(s, px + 0.3, 4.0, 5.6, 0.3, head, size=12, color=col, bold=True, after=0)
-    text(s, px + 0.3, 4.4, 5.6, 2.0, body, size=15, color=INK, after=0)
+    rect(s, px, 4.25, 0.08, 1.45, col)
+    text(s, px + 0.3, 4.25, 5.6, 0.3, head, size=12, color=col, bold=True, after=0)
+    text(s, px + 0.3, 4.65, 5.6, 2.0, body, size=15, color=INK, after=0)
 footer(s, "Sources: Parisi (2019), Ch. 5, network anomaly detection with AI; Krebs (2026); author’s Module 1 lab results.", 5)
 notes(s, """My recommended control is AI-based egress anomaly detection, which applies Chapter 5 of Parisi
 directly. The detector learns what normal outbound activity looks like for each service account, using
@@ -319,15 +323,16 @@ for i, (head, col, items) in enumerate(cols):
             d.fill.solid(); d.fill.fore_color.rgb = col; d.line.fill.background()
         iy += 1.15
 bullets(s, 7.75, 1.9, 5.0, 3.2, [
-    "**The trend:** mobile driver’s licenses (ISO/IEC 18013-5, 2021), now accepted by more U.S. states and TSA checkpoints.",
+    "**The trend:** mobile driver’s licenses (ISO/IEC 18013-5). TSA accepts digital IDs at 250+ airports and “sees only the necessary information.”",
     "**Mitigation link:** verifiers never hold an image, so a breach like IDScan’s yields nothing reusable.",
     "**With the AI control:** minimize what is stored, then monitor what remains.",
 ], size=16, after=14, marker_color=TEAL)
 text(s, 7.75, 5.35, 5.0, 1.0, "“We don’t have nearly the oversight to ensure they are safe.”  Z. Edwards, privacy researcher, in Krebs (2026)",
      size=13, color=MUTED, italic=True)
-footer(s, "Sources: International Organization for Standardization (2021); Krebs (2026).", 6)
+footer(s, "Sources: International Organization for Standardization (2021); Krebs (2026); Transportation Security Administration (n.d.).", 6)
 notes(s, """The current trend I connect to mitigation is the shift to mobile driver's licenses and selective
-disclosure, standardised in ISO/IEC 18013-5. Instead of photocopying a physical card, the verifier asks the
+disclosure, standardised in ISO/IEC 18013-5. TSA already accepts digital IDs at more than 250 airports and says it
+sees only the information it needs. Instead of photocopying a physical card, the verifier asks the
 phone a narrow question, such as whether the holder is over 21, and receives a cryptographically signed
 yes or no from the issuing state. Nothing reusable needs to be stored, so a breach of the verifier yields
 no identity documents. This is data minimization in practice, and it answers the oversight gap the privacy
@@ -355,9 +360,11 @@ refs = [
     "https://www.iso.org/standard/69084.html",
     "Parisi, A. (2019). *Hands-on artificial intelligence for cybersecurity: Implement smart AI systems for "
     "preventing cyber attacks and detecting threats and network anomalies*. Packt Publishing.",
+    "Transportation Security Administration. (n.d.). *Digital identity and facial comparison technology*. "
+    "Retrieved September 27, 2026, from https://www.tsa.gov/digital-id",
 ]
 text(s, 6.65, 1.85, 6.1, 0.3, "REFERENCES", size=12, color=ACCENT, bold=True, after=0)
-box = text(s, 6.65, 2.25, 6.1, 4.2, refs, size=12, color=INK, after=10, spacing=1.05)
+box = text(s, 6.65, 2.25, 6.1, 4.2, refs, size=11.5, color=INK, after=8, spacing=1.05)
 for p in box.text_frame.paragraphs:        # APA hanging indent
     pPr = p._p.get_or_add_pPr()
     pPr.set("marL", str(Emu(Inches(0.4))))
@@ -368,7 +375,7 @@ evaluated single flows, and this attacker was patient enough to blend in flow by
 As I work toward a career in security engineering, I want to design detectors that model behavior over
 time, and to push for architectures that store less sensitive data in the first place. The references
 are listed in APA format: the Krebs on Security article, the ISO standard for mobile driving licences, and
-Chapter 5 of Parisi's Hands-On Artificial Intelligence for Cybersecurity.""")
+Chapter 5 of Parisi's Hands-On Artificial Intelligence for Cybersecurity, and TSA's page on digital IDs.""")
 
 prs.save(OUT)
 print("wrote", OUT, len(prs.slides), "slides")

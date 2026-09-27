@@ -10,7 +10,7 @@ A 7-slide threat analysis of a real 2026 incident reported by Krebs on Security.
 | CIA element | Severity | Why |
 |---|---|---|
 | Confidentiality | **Severe** | 153M+ license images (front, back, IR, UV) copied and sold; unlike passwords, identity data can't be reset |
-| Integrity | High | Forgery-grade scans let criminals pass ID checks, so a "verified" ID no longer proves identity |
+| Integrity | Moderate | No sign stored records were altered, but forgery-grade scans let criminals pass other firms' ID checks |
 | Availability | Low | No reported outage; indirect cost from credit freezes and re-verification |
 
 **Recommended control:** AI-based egress anomaly detection (Parisi, 2019, Ch. 5). The detector learns a per-account baseline of outbound data, scores it with a Gaussian mixture density, and cuts off low-probability activity. This connects to a lesson from [Module 1](../module-01-intrusion-detection/): per-flow models miss slow leaks, so baselines must span days (UEBA).
@@ -41,3 +41,4 @@ The deck is generated from [`build_deck.py`](build_deck.py), and every diagram i
 - Krebs, B. (2026, September 1). [FBI probes service selling 153M+ drivers licenses](https://krebsonsecurity.com/2026/09/fbi-probes-service-selling-153m-drivers-licenses/). *Krebs on Security*.
 - Parisi, A. (2019). *Hands-on artificial intelligence for cybersecurity*. Packt Publishing.
 - International Organization for Standardization. (2021). *ISO/IEC 18013-5:2021, Mobile driving licence (mDL) application*.
+- Transportation Security Administration. (n.d.). [Digital identity and facial comparison technology](https://www.tsa.gov/digital-id).
