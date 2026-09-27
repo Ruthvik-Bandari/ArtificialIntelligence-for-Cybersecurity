@@ -352,12 +352,12 @@ header(s, "Reflection and references", "Takeaways")
 rect(s, MARGIN, 1.8, 5.6, 3.85, LIGHT, shape=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.05)
 text(s, MARGIN + 0.3, 2.0, 5.0, 0.3, "WHAT I LEARNED", size=12, color=ACCENT, bold=True, after=0)
 text(s, MARGIN + 0.3, 2.4, 5.0, 3.9, [
-    "This case changed how I read my Module 1 detector: a strong score is not enough when an attacker is "
-    "patient enough to look normal one event at a time.",
-    "In security engineering, I want to build detectors that model **behavior over time** and to argue "
-    "for storing less data.",
-    "**Three questions I now ask:** What do we store? How fast would we notice it leaving? How quickly "
-    "can we cut it off?",
+    "My Module 1 detector scored well, but this breach exposes its blind spot: a patient attacker who "
+    "looks normal one flow at a time. **A model’s limits matter as much as its score.**",
+    "The cipher lab showed me that patterns leak. Here, stored data leaked. Sometimes the strongest "
+    "control is keeping less.",
+    "As a future security engineer, I want to build detectors that track **behavior over time**, with a "
+    "named analyst approving high-impact responses.",
 ], size=15, color=INK, after=12)
 refs = [
     "Krebs, B. (2026, September 1). FBI probes service selling 153M+ drivers licenses. *Krebs on Security*. "
@@ -377,12 +377,17 @@ for p in box.text_frame.paragraphs:        # APA hanging indent
     pPr.set("marL", str(Emu(Inches(0.4))))
     pPr.set("indent", str(-Emu(Inches(0.4))))
 footer(s, "References formatted in APA 7th edition.", 7)
-notes(s, """This case changed how I read my own Module 1 results. My detector scored well overall, but it
-evaluated single flows, and this attacker was patient enough to blend in flow by flow for over a year.
-As I work toward a career in security engineering, I want to design detectors that model behavior over
-time, and to push for architectures that store less sensitive data in the first place. The references
-are listed in APA format: the Krebs on Security article, the ISO standard for mobile driving licences, and
-Chapter 5 of Parisi's Hands-On Artificial Intelligence for Cybersecurity, and TSA's page on digital IDs.""")
+notes(s, """This case exposed a blind spot in my own Module 1 detector. It scored well overall, but it
+judged single flows, and this attacker was patient enough to blend in flow by flow for over a year. The
+habit I most want to carry forward is interrogating a model until its limits are explicit, because a
+strong score does not prove broad protection. The cipher lab in this module taught me that structure
+leaks through encryption; this breach showed that stored data leaks too, so sometimes the best control
+is simply keeping less of it. In my future security engineering work, I want to build detectors that
+model behavior over time, and keep a named analyst accountable for high-impact automated responses. The
+references are listed in APA format: the Krebs on Security article, the ISO standard for mobile driving
+licences, Chapter 5 of Parisi's Hands-On Artificial Intelligence for Cybersecurity, and TSA's page on
+digital IDs.""")
+
 
 prs.save(OUT)
 print("wrote", OUT, len(prs.slides), "slides")
