@@ -2,7 +2,7 @@
 
 Implements the **Caesar** and **simple substitution** ciphers from scratch, then breaks both with statistical cryptanalysis. That covers an automated chi-squared brute-force breaker, frequency analysis, word-pattern matching and a known-plaintext attack.
 
-**Report (PDF):** [`Ruthvik_Nath_Bandari_Module2_Lab_Report.pdf`](Ruthvik_Nath_Bandari_Module2_Lab_Report.pdf)
+**Report (PDF, APA 7):** [`Ruthvik_Nath_Bandari_Module2_Lab_Report.pdf`](Ruthvik_Nath_Bandari_Module2_Lab_Report.pdf)
 **Notebook:** [`Ruthvik_Nath_Bandari_Encryption_Lab2.ipynb`](Ruthvik_Nath_Bandari_Encryption_Lab2.ipynb)
 
 ## Key results
@@ -46,6 +46,11 @@ jupyter lab Ruthvik_Nath_Bandari_Encryption_Lab2.ipynb
 ```
 
 All randomness is seeded (`SEED = 42`), so keys, tables and figures reproduce exactly. Figures are written to [`figures/`](figures/).
+
+**Rebuild the APA report PDF** (needs Google Chrome; edit the title-page values at the top of the script first):
+```bash
+python report/build_apa_report.py
+```
 
 ## Stack
 Python 3 · `collections` · `string` · `random` · `time` · `math` · matplotlib · pandas
