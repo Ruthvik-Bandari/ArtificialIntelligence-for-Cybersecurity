@@ -14,6 +14,7 @@ Hands-on labs from the **AI for Cybersecurity** course at Northeastern Universit
 | 1 | [Network intrusion detection](module-01-intrusion-detection/) | An unsupervised anomaly-detection IDS on CIC-IDS-2017 (2.8M flows), using a Gaussian and a Gaussian Mixture density model trained on benign traffic only | ROC-AUC **0.966**, PR-AUC **0.930**; catches 7/14 attack families at >90% recall without seeing a single attack |
 | 2 | [Classical encryption & cryptanalysis](module-02-classical-encryption/) | Caesar and substitution ciphers, plus an automated chi-squared breaker, frequency analysis and a known-plaintext attack | Breaks Caesar with **100%** accuracy from 50 letters; recovers **89.4%** of a substitution ciphertext without brute force |
 | 2 | [CIA triad threat analysis](module-02-cia-triad-analysis/) | A 7-slide analysis of the 2026 Nexus / IDScan.net breach (153M+ driver's licenses advertised), mapped to the CIA triad, with an AI egress anomaly-detection control | Traces the year-long leak to confidentiality loss and shows why per-account baselines (UEBA) beat per-flow models for slow exfiltration |
+| 3 | [Autoencoder intrusion detection](module-03-autoencoder-ids/) | A dense autoencoder (37→20→10→20→37) trained on normal NSL-KDD traffic only, compared against Isolation Forest with per-attack-type analysis | ROC-AUC **0.958**, F1 **0.833**; catches 66.5% of attack types never seen in training |
 
 Each folder has its own README covering results, figures and how to run or rebuild the work.
 
@@ -36,6 +37,11 @@ Each folder has its own README covering results, figures and how to run or rebui
 │   ├── Ruthvik_Nath_Bandari_Module2_CIA_Triad_Analysis.pptx / .pdf
 │   ├── build_deck.py                         # generates the deck
 │   └── README.md
+├── module-03-autoencoder-ids/
+│   ├── Bandari_Ruthvik_AI_IDS_lab3.ipynb     # autoencoder IDS (downloads NSL-KDD itself)
+│   ├── Bandari_Ruthvik_AI_IDS_lab3_Report.pdf
+│   ├── figures/  report/build_apa_report.py
+│   └── README.md
 └── requirements.txt                          # shared environment for all modules
 ```
 
@@ -57,7 +63,7 @@ Large datasets are not committed. Each module's README explains where to downloa
 
 ## Skills demonstrated
 
-- **Security ML:** unsupervised anomaly detection, threshold selection under class imbalance, and per-attack-family evaluation
+- **Security ML:** unsupervised anomaly detection (density models, autoencoders), threshold selection under class imbalance, and per-attack-family evaluation
 - **Cryptanalysis:** frequency analysis, chi-squared scoring, pattern and known-plaintext attacks, and key-space analysis
 - **Data engineering:** data-quality audits, leakage-free preprocessing, and reproducible seeded experiments
 - **Threat analysis:** CIA triad impact assessment of real incidents, and control recommendations grounded in current practice
