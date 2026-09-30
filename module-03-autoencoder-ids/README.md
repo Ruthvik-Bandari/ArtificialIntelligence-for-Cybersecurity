@@ -13,9 +13,9 @@ An **unsupervised anomaly detector**: a dense autoencoder trained only on *norma
 | False-positive rate | 0.043 | **0.025** |
 | ROC-AUC | **0.958** | 0.939 |
 | Recall: DoS / Probe / R2L / U2R | **0.86** / 0.81 / **0.35** / **0.69** | 0.80 / **0.91** / 0.07 / 0.50 |
-| Recall on novel (test-only) attack types | 0.665 | 0.690 |
+| Recall on records of novel (test-only) attack types | 0.665 | 0.690 |
 
-**Takeaways:** floods and scans are caught at over 90%. R2L is hardest: `snmpgetattack` records are often numerically identical to normal traffic, and `guess_passwd` only shows up across many sessions. Dropping the categorical features (as the brief requires) costs `smurf` detection, because its packet sizes are anomalous only for ICMP. Applying `log1p` before StandardScaler raised ROC-AUC from 0.936 to 0.958.
+**Takeaways:** floods and scans are caught at over 90%. R2L is hardest: `snmpgetattack` records are often numerically identical to normal traffic, and `guess_passwd` only shows up across many sessions. Dropping the categorical features (as the brief requires) costs `smurf` detection, because its byte volumes are anomalous only relative to ICMP traffic. Applying `log1p` before StandardScaler raised ROC-AUC from 0.936 to 0.958.
 
 <p align="center">
   <img src="figures/fig3_confusion_roc.png" width="80%" alt="Confusion matrix and ROC curve">
