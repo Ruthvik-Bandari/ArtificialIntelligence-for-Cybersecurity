@@ -40,12 +40,12 @@ def paras(block: str) -> str:
     return "\n".join(f"<p>{md_inline(p.strip())}</p>" for p in block.strip().split("\n\n"))
 
 
-def figure(num: int, title: str, img: Path, note: str) -> str:
+def figure(num: int, title: str, img: Path, note: str, width: str = "100%") -> str:
     return f"""
 <div class="figure">
   <p class="label"><b>Figure {num}</b></p>
   <p class="ftitle"><i>{md_inline(title)}</i></p>
-  <img src="{img.as_uri()}" alt="{html.escape(title)}">
+  <img src="{img.as_uri()}" alt="{html.escape(title)}" style="width:{width}; margin-left:auto; margin-right:auto">
   <p class="note"><i>Note.</i> {md_inline(note)}</p>
 </div>"""
 
@@ -62,17 +62,19 @@ The autoencoder (37–20–10–20–37, ReLU hidden layers, linear output) was 
 """
 
 RESULTS_1 = """
-Training loss fell from 0.786 to 0.135, and validation loss tracked it without diverging. The threshold flagged 5.05% of unseen normal validation records, as designed. On the test set, the autoencoder achieved a precision of 0.958, recall of 0.737, F1 of 0.833, and ROC-AUC of 0.958, with a 4.3% false-positive rate (Figure 1).
+Training loss fell from 0.786 to 0.135, and validation loss followed it with no widening gap (Figure 1). The threshold flagged 5.05% of unseen normal validation records, close to the intended 5%. On the test set, the autoencoder achieved a precision of 0.958, recall of 0.737, F1 of 0.833, and ROC-AUC of 0.958, with a 4.3% false-positive rate (Figure 2).
 
 The autoencoder outperformed the Isolation Forest overall (Table 1), but not everywhere. At a 1% false-positive budget, the Isolation Forest caught 56% of attacks, compared with 48% for the autoencoder. The larger difference was in which attacks each model caught: the autoencoder detected far more remote-to-local (R2L) and user-to-root (U2R) attacks, while the Isolation Forest was better on scans. The autoencoder also caught 66.5% of the attack types that appear only in the test set.
 """
 
 RESULTS_2 = """
-The per-attack analysis (Figure 2) shows where detection fails. Floods and scans such as *neptune*, *nmap*, and *satan* exceeded 90% recall. R2L was the hardest category, at 35%. The model never detected *snmpgetattack* or *snmpguess*, and 30% of *snmpgetattack* records are numerically identical to normal records, so no detector using these features could separate them. *guess_passwd* reached only 18% because each guess looks like an ordinary short session. *smurf* (2%) revealed a cost of the numerical-only design: its 1,008-byte packets are anomalous only for ICMP traffic, and the protocol field had been removed. An ablation showed that the log transform raised ROC-AUC from 0.936 to 0.958, so preprocessing is itself a detection decision.
+The per-attack analysis (Figure 3) shows where detection fails. Floods and scans such as *neptune*, *nmap*, and *satan* exceeded 90% recall. R2L was the hardest category, at 35%, although published category mappings differ for a few test-only attacks. The model never detected *snmpgetattack* or *snmpguess*. In fact, 30% of *snmpgetattack* records are numerically identical to normal records, so no detector using these features could separate them. *guess_passwd* reached only 18%: only 38% of its records show a failed login, so each guess looks like an ordinary short session.
+
+Two misses trace back to design choices. *smurf* (2%) sends 1,008-byte ICMP packets, where normal ICMP traffic carries 30 bytes, but with the protocol field removed that size looks ordinary. *pod* (27%) carries a fragmentation flag never seen in normal traffic, yet averaging the error over 37 features diluted that single signal below the threshold. An ablation also showed that the log transform raised ROC-AUC from 0.936 to 0.958, so preprocessing is itself a detection decision.
 """
 
 REFLECTION = """
-In Module 1, my Gaussian mixture detector missed SSH brute force and botnet traffic because each individual flow looked normal. The autoencoder is a far more flexible model, yet it failed on *guess_passwd* for the same reason. That repetition was the most useful lesson of this lab: model capacity cannot recover information the features do not contain. A deeper network would not catch a password-guessing campaign, but a feature that counts failed logins per source over ten minutes would.
+In Module 1, my Gaussian mixture detector missed SSH brute force and botnet traffic because each individual flow looked normal. The autoencoder is a far more flexible model, yet it failed on *guess_passwd* for the same reason. That repetition was the most useful lesson of this lab: model capacity cannot recover information the features do not contain. A deeper network would not catch a password-guessing campaign, but a feature that counts failed logins per source over ten minutes would. The *pod* result added a related lesson: even when the right signal is present, the way the error is scored can hide it.
 
 The lab also reinforced that the threshold is a security decision, not a technical detail. Moving from the 95th to the 99th percentile cuts false alarms from 4.3% to under 1%, but drops recall from 74% to 47%. That trade-off belongs to the team answering the alerts. The work I want to do is build detectors that model behavior over time, per user and per host, and pair them with analysts who can act on ranked, explained alerts. This lab showed me that an autoencoder is a useful part of that system, but not the whole system.
 """
@@ -130,6 +132,7 @@ def build_html() -> str:
   thead th {{ border-top: 1px solid #000; border-bottom: 1px solid #000; font-weight: normal; }}
   tbody tr:last-child td {{ border-bottom: 1px solid #000; }}
   .refs {{ page-break-before: always; }}
+  .float-page {{ page-break-before: always; }}
   .ref {{ text-indent: -0.5in; padding-left: 0.5in; }}
 </style></head><body>
 
@@ -150,9 +153,19 @@ def build_html() -> str:
 
 <h1>Results</h1>
 {paras(RESULTS_1)}
-{figure(1, "Autoencoder Confusion Matrix and ROC Curve on the NSL-KDD Test Set", FIGS / "fig3_confusion_roc.png",
-        "Threshold = 95th percentile of training reconstruction error. The black dot marks this operating "
-        "point on the ROC curve. Test set: 9,711 normal and 12,833 attack connections.")}
+
+<h1>Attack Type Analysis</h1>
+{paras(RESULTS_2)}
+
+<h1>Reflection</h1>
+{paras(REFLECTION)}
+
+<section class="refs">
+  <h1>References</h1>
+  {refs_html}
+</section>
+
+<section class="float-page">
 <div class="table">
   <p class="label"><b>Table 1</b></p>
   <p class="ftitle"><i>Autoencoder Compared With Isolation Forest on the NSL-KDD Test Set</i></p>
@@ -163,19 +176,21 @@ def build_html() -> str:
   <p class="note"><i>Note.</i> Both models were trained on the same normal-only records and thresholded at the
   95th percentile of their own training scores. The better value in each row is in bold.</p>
 </div>
-
-<h1>Attack Type Analysis</h1>
-{paras(RESULTS_2)}
-{figure(2, "Reconstruction Error by Category and Detection Rate by Attack Type", FIGS / "fig5_attack_type_recall.png",
+</section>
+<section class="float-page">
+{figure(1, "Autoencoder Training and Validation Loss on Normal Traffic", FIGS / "fig1_loss_curve.png",
+        "Mean squared reconstruction error per epoch on a logarithmic scale. Both sets contain normal records only; "
+        "validation loss was still improving at epoch 50, so early stopping did not end training.")}
+</section>
+<section class="float-page">
+{figure(2, "Autoencoder Confusion Matrix and ROC Curve on the NSL-KDD Test Set", FIGS / "fig3_confusion_roc.png",
+        "Threshold = 95th percentile of training reconstruction error. The black dot marks this operating "
+        "point on the ROC curve. Test set: 9,711 normal and 12,833 attack connections.")}
+</section>
+<section class="float-page">
+{figure(3, "Reconstruction Error by Category and Detection Rate by Attack Type", FIGS / "fig5_attack_type_recall.png",
         "Left: error distributions on a log scale; the dashed line is the detection threshold. Right: autoencoder "
         "recall for attack types with at least 20 test records; an asterisk marks types absent from training.")}
-
-<h1>Reflection</h1>
-{paras(REFLECTION)}
-
-<section class="refs">
-  <h1>References</h1>
-  {refs_html}
 </section>
 </body></html>"""
 
