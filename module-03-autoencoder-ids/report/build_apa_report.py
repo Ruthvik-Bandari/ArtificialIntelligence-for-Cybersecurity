@@ -52,45 +52,47 @@ def figure(num: int, title: str, img: Path, note: str, width: str = "100%") -> s
 
 # ---- BODY ---------------------------------------------------------------------------------------
 INTRO = """
-Signature-based intrusion detection only catches attacks someone has already described. This lab tested an alternative: an autoencoder trained on normal network connections only, which flags any connection it cannot reconstruct. The official NSL-KDD test set contains 17 attack types that never appear in training, so it also measures whether the detector generalizes to attacks it has never seen.
+Signature-based intrusion detection only catches attacks someone has already described. This lab tested an alternative: an autoencoder trained on normal network connections only, which flags any connection it reconstructs poorly. The official NSL-KDD test set includes 17 attack types absent from training, which tests generalization to unseen attacks.
 """
 
 METHOD = """
-NSL-KDD (Tavallaee et al., 2009) provides 125,973 training and 22,544 test connections, each described by 41 features. Following the brief, I kept numerical features only. I dropped the three categorical fields and the constant *num_outbound_cmds*, which left 37 inputs. The 67,343 normal training records were split 80/20 into training and validation sets. Heavy-tailed count and byte features were log-transformed, and a StandardScaler was then fitted on the training portion only, to prevent leakage.
+NSL-KDD (Canadian Institute for Cybersecurity, n.d.; Tavallaee et al., 2009) provides 125,973 training and 22,544 test connections, each described by 41 features. Following the brief's numerical-only rule, I dropped the three categorical fields and the constant *num_outbound_cmds*, leaving 37 inputs rather than 41. The 67,343 normal training records were split 80/20 into training and validation sets. Heavy-tailed count and byte features were log-transformed, and a StandardScaler was fitted on the training portion only.
 
-The autoencoder (37–20–10–20–37, ReLU hidden layers, linear output) was trained with Adam and mean squared error for 50 epochs with early stopping. The anomaly threshold was the 95th percentile of training reconstruction errors. An Isolation Forest (Liu et al., 2008) received identical inputs and the same threshold rule.
+The autoencoder (37–20–10–20–37, ReLU hidden layers, linear output) was trained with Adam and mean squared error for up to 50 epochs with early stopping (patience 5), which never triggered. The anomaly threshold was the 95th percentile of training reconstruction errors. An Isolation Forest (Liu et al., 2008) received identical inputs and the same threshold rule.
 """
 
 RESULTS_1 = """
-Training loss fell from 0.786 to 0.135, and validation loss followed it with no widening gap (Figure 1). The threshold flagged 5.05% of unseen normal validation records. On the test set, the autoencoder achieved a precision of 0.958, recall of 0.737, F1 of 0.833, and ROC-AUC of 0.958, with a 4.3% false-positive rate (Figure 2).
+Training loss fell from 0.786 to 0.134, and validation loss followed it with no widening gap (Figure 1). The threshold flagged 5.02% of unseen normal validation records. On the test set, the autoencoder achieved precision 0.957, recall 0.730, F1 0.828, and ROC-AUC 0.958, with a 4.3% false-positive rate (Figure 2).
 
-The autoencoder outperformed the Isolation Forest overall (Table 1), but not everywhere. At a 1% false-positive budget, the Isolation Forest caught 56% of attacks, compared with 48% for the autoencoder. The larger difference was which attacks each model caught: the autoencoder detected far more remote-to-local (R2L) and user-to-root (U2R) attacks, while the Isolation Forest was better on scans. The autoencoder also detected 66.5% of attack records belonging to the 17 test-only attack types.
+The autoencoder beat the Isolation Forest on ROC-AUC and F1 (Table 1). The Isolation Forest had higher precision and fewer false positives, and at a 1% false-positive budget it caught 56% of attacks against 48%. The autoencoder detected far more remote-to-local (R2L) and somewhat more user-to-root (U2R) attacks, while the Isolation Forest was better on scans. On test-only attack types it detected 66.5% of attack records, versus 75.7% on seen types (Isolation Forest: 69.0%).
 """
 
 RESULTS_2 = """
-The per-attack analysis (Figure 3) shows where detection fails. Floods and scans such as *neptune*, *nmap*, and *satan* exceeded 90% recall. R2L was the hardest category, at 35%, although published category mappings differ for a few test-only attacks. The model never detected *snmpgetattack* or *snmpguess*. In fact, 30% of *snmpgetattack* records are numerically identical to normal records, so these features cannot separate them. *guess_passwd* reached only 18%: only 38% of its records show a failed login, so each guess looks like an ordinary short session.
+Floods and scans such as *neptune*, *nmap*, and *satan* exceeded 90% recall (Figure 3). R2L was hardest, at 32%, though category mappings vary between authors. *snmpgetattack* and *snmpguess* were never detected; at least 30% of *snmpgetattack* records are identical to normal records on all 37 features, so these features cannot separate them.
 
-Two misses trace back to design choices. *smurf* (2%) connections carry a median of 1,008 source bytes, compared with 30 for normal ICMP echo connections, but with the protocol and service fields removed that volume looks ordinary. *pod* (27%) connections carry a non-zero wrong-fragment count never seen in normal traffic, yet averaging the error over 37 features probably diluted that single signal below the threshold. An ablation showed that the log transform raised ROC-AUC from 0.936 to 0.958, so preprocessing is itself a detection decision.
+Two misses point to how the error is scored. *guess_passwd* reached only 11%. Most of its records show no failed login, but 38% do, a value found in only 0.1% of normal training records, and at least 70% of those were still missed. Similarly, 88% of *pod* records (27% recall) have a non-zero wrong-fragment count, never seen in normal training traffic. In both cases, averaging the error over 37 features probably diluted a strong single-feature signal. *smurf* (2%) connections carry a median of 1,008 source bytes, against 30 for normal ICMP echo-reply connections, but without the protocol and service fields that volume probably looks ordinary. An ablation showed that the log transform raised ROC-AUC from 0.937 to 0.958.
 """
 
 REFLECTION = """
-In Module 1, my Gaussian mixture detector missed SSH brute force and botnet traffic because each individual flow looked normal. The autoencoder is far more flexible, yet it failed on *guess_passwd* for the same reason. That repetition was the most useful lesson of this lab: model capacity cannot recover information the features do not contain. I did not test a deeper network, but the evidence points to features rather than capacity: a feature that counts failed logins per source over ten minutes would expose a password-guessing campaign directly. The *pod* result suggested a related lesson: even when the right signal is present, the way the error is scored can hide it.
+In Module 1, my Gaussian mixture detector missed SSH brute force and bot traffic because each individual flow looked normal. I expected the autoencoder to fail on *guess_passwd* for the same reason, and partly it did: most password guesses look like ordinary single sessions. But the evidence showed a second cause. Many guesses carried a rare failed-login signal, and the model still missed most of them, probably because averaging the error across 37 features hid it. The lesson I take from this lab is that detection depends on how anomalies are scored, not only on how flexible the model is.
 
-The lab also reinforced that the threshold is a security decision, not a technical detail. Moving from the 95th to the 99th percentile cuts false alarms from 4.3% to under 1%, but drops recall from 74% to 47%. That trade-off belongs to the team answering the alerts. The work I want to do is build detectors that model behavior over time, per user and per host, and pair them with analysts who can act on ranked, explained alerts. This lab showed me that an autoencoder is a useful part of that system, but not the whole system.
+The lab also reinforced that the threshold is a security decision, not a technical detail. Moving from the 95th to the 99th percentile cuts false alarms from 4.3% to under 1%, but drops recall from 73% to 47%. That trade-off belongs to the team answering the alerts. The work I want to do is build detectors that model behavior over time, per user and per host, and pair them with analysts who can act on ranked, explained alerts. An autoencoder is a useful part of that system, but not the whole system.
 """
 
 TABLE_ROWS = [
-    ("Precision", "0.958", "0.972"),
-    ("Recall", "<b>0.737</b>", "0.660"),
-    ("F1-score", "<b>0.833</b>", "0.786"),
+    ("Precision", "0.957", "<b>0.972</b>"),
+    ("Recall", "<b>0.730</b>", "0.660"),
+    ("F1-score", "<b>0.828</b>", "0.786"),
     ("False-positive rate", "0.043", "<b>0.025</b>"),
     ("ROC-AUC", "<b>0.958</b>", "0.939"),
     ("Recall at 1% false-positive rate", "0.481", "<b>0.561</b>"),
-    ("Recall: DoS / Probe", "<b>0.856</b> / 0.814", "0.801 / <b>0.914</b>"),
-    ("Recall: R2L / U2R", "<b>0.352 / 0.690</b>", "0.067 / 0.500"),
+    ("Recall: DoS / Probe", "<b>0.855</b> / 0.815", "0.801 / <b>0.914</b>"),
+    ("Recall: R2L / U2R", "<b>0.318 / 0.695</b>", "0.067 / 0.500"),
 ]
 
 REFERENCES = [
+    "Canadian Institute for Cybersecurity. (n.d.). <i>NSL-KDD dataset</i> [Data set]. University of New Brunswick. "
+    "https://www.unb.ca/cic/datasets/nsl.html",
     "Liu, F. T., Ting, K. M., &amp; Zhou, Z.-H. (2008). Isolation forest. In <i>Proceedings of the 2008 Eighth IEEE "
     "International Conference on Data Mining</i> (pp. 413–422). IEEE. https://doi.org/10.1109/ICDM.2008.17",
     "Tavallaee, M., Bagheri, E., Lu, W., &amp; Ghorbani, A. A. (2009). A detailed analysis of the KDD CUP 99 data set. "
@@ -154,7 +156,7 @@ def build_html() -> str:
 <h1>Results</h1>
 {paras(RESULTS_1)}
 
-<h1>Attack Type Analysis</h1>
+<h2>Attack Type Analysis</h2>
 {paras(RESULTS_2)}
 
 <h1>Reflection</h1>
