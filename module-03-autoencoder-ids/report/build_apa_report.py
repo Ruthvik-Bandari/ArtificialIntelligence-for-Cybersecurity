@@ -1,7 +1,7 @@
 """Build the Module 3 lab report as an APA 7 student paper (HTML -> PDF via headless Chrome).
 
 Usage:  python report/build_apa_report.py
-Output: Bandari_Ruthvik_AI_IDS_lab3_Report.pdf (module folder)
+Output: Bandari_Ruthvik_Nath_AI_IDS_lab3_Report.pdf (module folder)
 
 Edit the TITLE PAGE values below, then re-run.
 """
@@ -16,13 +16,13 @@ AUTHOR = "Ruthvik Nath Bandari"
 AFFILIATION = "Northeastern University"
 COURSE = "AAI6680: AI for Cybersecurity"
 INSTRUCTOR = "Mimoza Dimodugno, PhD"
-DUE_DATE = "September 28, 2026"
+DUE_DATE = "September 29, 2026"
 # -----------------------------------------------------------------------------------------------
 
 HERE = Path(__file__).resolve().parent
 MODULE = HERE.parent
 FIGS = MODULE / "figures"
-OUT_PDF = MODULE / "Bandari_Ruthvik_AI_IDS_lab3_Report.pdf"
+OUT_PDF = MODULE / "Bandari_Ruthvik_Nath_AI_IDS_lab3_Report.pdf"
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 

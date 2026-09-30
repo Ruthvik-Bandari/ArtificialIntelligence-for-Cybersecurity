@@ -38,8 +38,8 @@ Each folder has its own README covering results, figures and how to run or rebui
 │   ├── build_deck.py                         # generates the deck
 │   └── README.md
 ├── module-03-autoencoder-ids/
-│   ├── Bandari_Ruthvik_AI_IDS_lab3.ipynb     # autoencoder IDS (downloads NSL-KDD itself)
-│   ├── Bandari_Ruthvik_AI_IDS_lab3_Report.pdf
+│   ├── Bandari_Ruthvik_Nath_AI_IDS_lab3.ipynb     # autoencoder IDS (downloads NSL-KDD itself)
+│   ├── Bandari_Ruthvik_Nath_AI_IDS_lab3_Report.pdf
 │   ├── figures/  report/build_apa_report.py
 │   └── README.md
 └── requirements.txt                          # shared environment for all modules

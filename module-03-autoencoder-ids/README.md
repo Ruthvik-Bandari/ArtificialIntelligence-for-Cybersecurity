@@ -2,8 +2,8 @@
 
 An **unsupervised anomaly detector**: a dense autoencoder trained only on *normal* NSL-KDD connections flags any connection it cannot reconstruct. It is compared with an Isolation Forest and broken down by attack type, including 17 attack types that appear only in the test set.
 
-**Notebook:** [`Bandari_Ruthvik_AI_IDS_lab3.ipynb`](Bandari_Ruthvik_AI_IDS_lab3.ipynb)
-**Report (PDF, APA 7):** [`Bandari_Ruthvik_AI_IDS_lab3_Report.pdf`](Bandari_Ruthvik_AI_IDS_lab3_Report.pdf)
+**Notebook:** [`Bandari_Ruthvik_Nath_AI_IDS_lab3.ipynb`](Bandari_Ruthvik_Nath_AI_IDS_lab3.ipynb)
+**Report (PDF, APA 7):** [`Bandari_Ruthvik_Nath_AI_IDS_lab3_Report.pdf`](Bandari_Ruthvik_Nath_AI_IDS_lab3_Report.pdf)
 
 ## Key results (KDDTest+, 22,544 connections)
 
@@ -36,7 +36,7 @@ An **unsupervised anomaly detector**: a dense autoencoder trained only on *norma
 **Locally** (TensorFlow needs Python ≤ 3.12 or 3.13):
 ```bash
 pip install tensorflow scikit-learn pandas matplotlib seaborn
-jupyter lab Bandari_Ruthvik_AI_IDS_lab3.ipynb
+jupyter lab Bandari_Ruthvik_Nath_AI_IDS_lab3.ipynb
 ```
 Seeds are fixed (`SEED = 42`) and op determinism is enabled. Other TensorFlow versions may shift the numbers slightly.
 
