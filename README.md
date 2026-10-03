@@ -15,6 +15,7 @@ Hands-on labs from the **AI for Cybersecurity** course at Northeastern Universit
 | 2 | [Classical encryption & cryptanalysis](module-02-classical-encryption/) | Caesar and substitution ciphers, plus an automated chi-squared breaker, frequency analysis and a known-plaintext attack | Breaks Caesar with **100%** accuracy from 50 letters; recovers **89.4%** of a substitution ciphertext without brute force |
 | 2 | [CIA triad threat analysis](module-02-cia-triad-analysis/) | A 7-slide analysis of the 2026 Nexus / IDScan.net breach (153M+ driver's licenses advertised), mapped to the CIA triad, with an AI egress anomaly-detection control | Traces the year-long leak to confidentiality loss and shows why per-account baselines (UEBA) beat per-flow models for slow exfiltration |
 | 3 | [Autoencoder intrusion detection](module-03-autoencoder-ids/) | A dense autoencoder (37→20→10→20→37) trained on normal NSL-KDD traffic only, compared against Isolation Forest with per-attack-type analysis | ROC-AUC **0.958**, F1 **0.833**; detects 66.5% of attack records from types never seen in training |
+| 3 | [AI industry transformation research](module-03-industry-transformation/) | A 10-slide leadership briefing on AI-driven threat detection and threat intelligence (Microsoft, CrowdStrike, Palo Alto, SentinelOne, Splunk), with a native ROI chart | Extensive security AI linked to **$1.9M** lower breach costs and **80** fewer days (IBM, 2025) |
 
 Each folder has its own README covering results, figures and how to run or rebuild the work.
 
