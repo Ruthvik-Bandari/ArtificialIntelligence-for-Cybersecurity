@@ -379,7 +379,7 @@ text(s, 6.75, 6.2, 6.0, 0.4, "Importance across all attacks: byte counts, connec
 footer(s, f"Sources: author's analysis; {CITE_C5}.", 5)
 notes(s, f"""What threats does it detect best? Denial of service. A flood is statistically loud: the median DoS
 connection is one of {dp['DoS median']['count']:.0f} connections to the same host in the previous two seconds, against
-{dp['Normal median']['count']:.0f} for normal traffic, and nearly all of them end in SYN errors because the attacker never
+{dp['Normal median']['count']:.0f} for normal traffic, and most of them end in SYN errors because the attacker never
 completes the handshake. The Random Forest picks this up mainly through byte counts, the connection-status flag and connection-pattern
 features such as count and same-service rate, shown on the right.
 That is why DoS stayed the best-detected family on the official test set, at {pct(S['off_rate']['DoS'])}.""")
