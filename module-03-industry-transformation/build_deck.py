@@ -193,7 +193,7 @@ text(s, MARGIN, 3.6, 12.0, 1.0, "A strategic briefing for leadership on AI-drive
 text(s, MARGIN, 5.25, 12.0, 1.4, [
     "Ruthvik Nath Bandari",
     "AAI6680: AI for Cybersecurity · Northeastern University · Mimoza Dimodugno, PhD",
-    "October 3, 2026",
+    "Due Date: October 4, 2026",
 ], size=16, color=RGBColor(0xC9, 0xD3, 0xE0), after=4)
 notes(s, """This briefing answers one question for leadership: how is AI changing security operations at
 leading organizations, and should we follow? I look at two areas: AI for threat detection, and AI for
