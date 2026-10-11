@@ -694,7 +694,8 @@ accuracy is meaningless, and I had to keep SMOTE inside the cross-validation fol
 into validation scores. Applying SMOTE before splitting would have produced better-looking numbers and a worse model.
 
 The other lesson repeats from earlier modules. In Module 3, my autoencoder missed attacks that looked normal in its
-features; here, the frauds the ensemble missed were small payments that looked ordinary on every principal component. A
+features; here, the frauds the ensemble missed were small payments (median €2.22) that looked close to legitimate traffic on the strongest
+components, such as V14. A
 stronger model will not find a signal that is not in the data. Behavioural context, such as how often a card is used or
 where, would.
 

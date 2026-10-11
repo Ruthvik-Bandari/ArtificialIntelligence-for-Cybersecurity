@@ -98,7 +98,7 @@ def figure(num: int, title: str, img: Path, note: str) -> str:
 
 # ---- BODY ---------------------------------------------------------------------------------------
 INTRO = f"""
-Card fraud is a needle-in-a-haystack problem. In the Credit Card Fraud Detection dataset (Dal Pozzolo et al., 2015; Machine Learning Group - ULB, 2018), only {S['fraud_rate']:.2%} of transactions are fraudulent. This lab compared three supervised models and a voting ensemble and turned their output into threat intelligence for a bank's fraud team. At the brief's request, it also includes a short analysis of a phishing-email dataset (Cyber Cop, 2023).
+Card fraud is a needle-in-a-haystack problem. In the Credit Card Fraud Detection dataset (Dal Pozzolo et al., 2015; Machine Learning Group - ULB, 2018), only {S['fraud_rate']:.2%} of transactions are fraudulent. This lab compared three supervised models and a voting ensemble and turned their output into threat intelligence for a bank's fraud team. As the brief requested, it also briefly analyzes phishing emails (Cyber Cop, 2023).
 """
 
 METHOD = f"""
@@ -126,15 +126,15 @@ In cross-validation, XGBoost (F1 = {cv['XGBoost']['f1']:.3f}) and random forest 
 INTEL = f"""
 In the full dataset, the median fraudulent transaction was small (€{S['fraud_amount']:.2f} against €{S['legit_amount']:.2f}; see also the dashboard in Figure 2), although a tail of larger frauds pushed the fraud mean above the legitimate mean. The fraud rate peaked at {S['peak_rate']:.1%} in hour {S['peak_hour']} counted from the first transaction (both days pooled), one of the lowest-volume hours. Ranked by mean position across four importance methods (Figure 3), *{f1}*, *{f2}*, and *{f3}* were the strongest fraud indicators.
 
-Table 2 gives the recommended thresholds. The balanced threshold ({BAL['threshold']:.3f}) caught {BAL['caught']} test frauds with a precision of {BAL['precision']:.2f}. The high-recall threshold caught {HR['caught']}, but alerts rose from {BAL['alerts_per_100k']:,.0f} to {HR['alerts_per_100k']:,.0f} per 100,000 transactions. The default 0.5 caught {REF['caught']}, so thresholds need recalibration after deployment. The {S['fn']} missed frauds had a median value of €{S['fn_amount']:.2f} and looked legitimate on the top components, suggesting that per-card behavioral features, not a more complex model, are the next step. In a simulated real-time stream, scoring took {S['latency_ms']:.1f} ms per transaction ({S['decision_ms']:.0f} ms with the uncertainty band), and uncertain transactions went to manual review.
+Table 2 gives the recommended thresholds. The balanced threshold ({BAL['threshold']:.3f}) caught {BAL['caught']} test frauds with a precision of {BAL['precision']:.2f}. The high-recall threshold caught {HR['caught']}, but alerts rose from {BAL['alerts_per_100k']:,.0f} to {HR['alerts_per_100k']:,.0f} per 100,000 transactions. The default 0.5 caught {REF['caught']}, so thresholds need recalibration after deployment. The {S['fn']} missed frauds had a median value of €{S['fn_amount']:.2f} and looked close to legitimate traffic on the top predictor, *{f1}*, suggesting that per-card behavioral features, not a more complex model, are the next step. In a simulated real-time stream, scoring took {S['latency_ms']:.1f} ms per transaction ({S['decision_ms']:.0f} ms with the uncertainty band), and uncertain transactions went to manual review.
 
-The phishing classifier reached an AUC-ROC of {S['phish_auc']:.3f}, an easier task because phishing vocabulary is distinctive. With two days of 2013 data and a random split, fraud detection in production would likely be weaker.
+The phishing classifier reached an AUC-ROC of {S['phish_auc']:.3f}, an easier task because phishing vocabulary is distinctive. With two days of 2013 data and a random split, production results would likely be weaker.
 """
 
 REFLECTION = """
 My Module 1 and Module 3 detectors learned only from normal traffic. This lab gave me labels, and they did not make the problem easy. With roughly one fraud in every 600 transactions, accuracy is meaningless, and SMOTE had to stay inside the cross-validation folds; applying it before splitting would have produced better-looking numbers and a worse model.
 
-The frauds the ensemble missed looked ordinary on every component, which echoes my Module 3 autoencoder: a stronger model cannot find a signal the data does not contain. I want to build detection systems whose thresholds are set together with the analysts who handle the alerts, and which, like the review band in my real-time scorer, know when they are unsure and hand those cases to a person.
+The missed frauds looked close to legitimate traffic on the strongest components, which echoes my Module 3 autoencoder: a stronger model cannot find a signal the data does not contain. I want to build detection systems whose thresholds are set together with the analysts who handle the alerts, and which, like the review band in my real-time scorer, know when they are unsure and hand those cases to a person.
 """
 
 
