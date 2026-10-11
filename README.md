@@ -17,6 +17,7 @@ Hands-on labs from the **AI for Cybersecurity** course at Northeastern Universit
 | 3 | [Autoencoder intrusion detection](module-03-autoencoder-ids/) | A dense autoencoder (37→20→10→20→37) trained on normal NSL-KDD traffic only, compared against Isolation Forest with per-attack-type analysis | ROC-AUC **0.958**, F1 **0.833**; detects 66.5% of attack records from types never seen in training |
 | 3 | [AI industry transformation research](module-03-industry-transformation/) | A 10-slide leadership briefing on AI-driven threat detection and threat intelligence (Microsoft, CrowdStrike, Palo Alto, SentinelOne, Splunk), with a native ROI chart | Extensive security AI linked to **$1.9M** lower breach costs and **80** fewer days (IBM, 2025) |
 | 4 | [Credit card fraud detection](module-04-fraud-detection/) | SMOTE-in-the-folds pipeline with tuned logistic regression, random forest and XGBoost, a soft-voting ensemble, a fraud dashboard, threat intelligence report and real-time scoring with uncertainty bands | Ensemble PR-AUC **0.829**, catching 76 of 95 test frauds with 8 false alarms in 56,746 transactions |
+| 4 | [AI threat detection system](module-04-threat-detection/) | A Random Forest ensemble on NSL-KDD and a 9-slide deck on catching denial-of-service attacks, with a reality check on unseen attack types | **99.90%** held-out accuracy but **76.7%** on the official test set, a gap that argues for pairing supervised and anomaly detection |
 
 Each folder has its own README covering results, figures and how to run or rebuild the work.
 
