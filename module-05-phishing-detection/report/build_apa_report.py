@@ -78,7 +78,7 @@ _b = list(S["brands"])[:3]
 BRAND_SENT = (f" The most impersonated named brands were {', '.join(_b[:-1])}, and {_b[-1]}." if len(_b) >= 2 else "")
 TACTIC_NOTE = ("Every synthetic tactic was detected in the test set."
                if S["worst_tactic_rate"] >= 1.0 else
-               f"Among synthetic tactics, {min(S['tactic_detection'], key=S['tactic_detection'].get).lower()} was detected least often "
+               f"Among synthetic tactics, {min(S['tactic_detection'], key=S['tactic_detection'].get)} was detected least often "
                f"({S['worst_tactic_rate']:.1%}).")
 
 
@@ -132,7 +132,7 @@ PhishTank data show that {pct(S['https_share'], 0)} of live phishing links use H
 """
 
 REFLECTION = f"""
-The real-world test taught me the most. Near-perfect scores on synthetic phishing looked like success, but the model caught almost none of the real phishing. That is the distribution-shift problem this course keeps returning to: a model is only as good as the data it learned from. I want to build email defenses that are trained and validated on fresh, real attacks and that explain every verdict, because an employee will only act on a warning they understand.
+The real-world test taught me the most. Near-perfect scores on synthetic phishing looked like success, but the model caught almost none of the real phishing. That is the distribution-shift problem this course has returned to since the network-intrusion and fraud labs of Modules 3 and 4: a model is only as good as the data it learned from. I want to build email defenses that are trained and validated on fresh, real attacks and that explain every verdict, because an employee will only act on a warning they understand.
 """
 
 TABLE1 = [(n.replace(" @ high-recall threshold", ", high-recall threshold"), f"{m['precision']:.3f}", f"{m['recall']:.3f}",
