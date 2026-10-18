@@ -193,7 +193,7 @@ text(s, MARGIN, 4.75, 12.0, 1.4, ["Ruthvik Nath Bandari",
 text(s, MARGIN, 6.3, 12.0, 0.6, f"**Google Colab notebook (shared link):** {LINK}", size=13, color=SOFT)
 notes(s, """This deck presents a phishing detector I built in Google Colab. It reads an email, decides whether it is
 phishing, and gives it a safety score from 0 to 100, like the filters in Gmail and Outlook. The full notebook, with the
-working model and all charts, is at the OneDrive link on this slide.""")
+working model and all charts, is at the Google Colab link on this slide.""")
 
 # ---- slide 2: the threat ------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK)
@@ -389,6 +389,18 @@ text(s, MARGIN, 5.2, SW - 2 * MARGIN, 0.9, [f"**Notebook:** Ruthvik_Nath_Bandari
      size=13, color=MUTED)
 footer(s, "Chapter citations: Parisi (2019), Chapter 3 “Ham or Spam?” and Chapter 5 “Network Anomaly Detection with AI.”", 10)
 notes(s, "References in APA 7th edition: the course textbook (Chapters 3 and 5), the 2025 FBI IC3 report and the Kaggle dataset.")
+
+# make the notebook link clickable on the references slide (white background keeps the theme's blue link readable)
+for shape in prs.slides[-1].shapes:
+    if shape.has_text_frame:
+        for para in shape.text_frame.paragraphs:
+            runs = para.runs
+            for i, run in enumerate(runs):
+                if LINK.startswith("http") and LINK in run.text:
+                    if run.text.startswith(" ") and i:
+                        runs[i - 1].text += " "
+                        run.text = run.text.lstrip()
+                    run.hyperlink.address = LINK
 
 prs.save(OUT)
 print(f"Wrote {OUT}")
