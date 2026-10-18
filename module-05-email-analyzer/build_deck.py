@@ -190,7 +190,7 @@ text(s, MARGIN, 3.45, 12.0, 1.0, f"Logistic regression trained on {S['n_train']:
 text(s, MARGIN, 4.75, 12.0, 1.4, ["Ruthvik Nath Bandari",
                                     "AAI6680: AI for Cybersecurity · Northeastern University · Mimoza Dimodugno, PhD", DATE],
      size=16, color=SOFT, after=4)
-text(s, MARGIN, 6.3, 12.0, 0.6, f"**Google Colab notebook (OneDrive):** {LINK}", size=13, color=SOFT)
+text(s, MARGIN, 6.3, 12.0, 0.6, f"**Google Colab notebook (shared link):** {LINK}", size=13, color=SOFT)
 notes(s, """This deck presents a phishing detector I built in Google Colab. It reads an email, decides whether it is
 phishing, and gives it a safety score from 0 to 100, like the filters in Gmail and Outlook. The full notebook, with the
 working model and all charts, is at the OneDrive link on this slide.""")
@@ -289,13 +289,13 @@ header(s, "The most suspicious words and phrases the AI learned", "Results · da
 picture(s, "fig_words", MARGIN, 1.85, w=7.6)
 text(s, 8.45, 1.85, 4.3, 0.3, "WHAT THE MODEL TREATS AS DANGEROUS", size=12, color=RED, bold=True, after=0)
 bullets(s, 8.45, 2.25, 4.3, 4.4, [
-    f"**Top phishing words:** {', '.join(f'*{w}*' for w in words[:5])}: links, calls to act and offers.",
+    f"**Top phishing words:** {', '.join(f'*{w}*' for w in words[:4])}: links and calls to act.",
     "**Exclamation marks** and **money terms** also push toward phishing.",
     "**Caveat:** names and places (*vince*, *houston*) mark the safe archive, so accuracy holds for this dataset only.",
 ], size=15, after=12, marker_color=RED)
 footer(s, "Source: author's analysis; weights from the logistic regression.", 6)
 notes(s, f"""Which patterns does the AI find most dangerous? The logistic regression weights show it: calls to act such as
-{', '.join(words[:5])}, and money and offer language. On the safe side are conversational words such as thanks and wrote,
+{', '.join(words[:4])}, and money and offer language. On the safe side are conversational words such as thanks and wrote,
 names and university addresses. I removed numbers and the archive names Enron and SpamAssassin from the vocabulary,
 because the two classes were collected in different years, but people's names and places from the safe archive still
 appear. That is why I treat the accuracy as valid for this dataset, not for any inbox.""")
