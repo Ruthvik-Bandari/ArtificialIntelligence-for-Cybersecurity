@@ -24,3 +24,6 @@ module-02-classical-encryption/report/apa_fig*.png
 module-03-autoencoder-ids/report/*.html
 module-04-fraud-detection/report/*.html
 module-04-fraud-detection/report/fig_*.png
+module-05-phishing-detection/data/
+module-05-phishing-detection/report/*.html
+module-05-phishing-detection/report/fig_*.png
