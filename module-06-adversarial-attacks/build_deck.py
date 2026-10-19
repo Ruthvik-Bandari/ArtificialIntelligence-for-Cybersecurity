@@ -15,7 +15,7 @@ from pptx.util import Emu, Inches, Pt
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "Bandari_Ruthvik_Nath_Module6_Adversarial_Attack_Analysis.pptx"
-DATE = "October 19, 2026"
+DATE = "October 18, 2026"
 
 # ---- palette ----------------------------------------------------------------------------------
 NAVY = RGBColor(0x0F, 0x1B, 0x2D)
