@@ -156,8 +156,7 @@ rect(s, 0, 0, SW, SH, NAVY)
 rect(s, MARGIN, 1.4, 0.9, 0.08, RED)
 text(s, MARGIN, 1.65, 12.0, 1.7, ["When AI Is the Target:", "Real-World Adversarial Attacks and Defenses"],
      size=42, color=WHITE, bold=True, spacing=1.0, after=0)
-text(s, MARGIN, 3.45, 12.0, 1.0, "One threat, adversarial manipulation of AI systems, traced through three real cases, "
-     "three company defenses and the rules now taking shape", size=20, color=SOFT, spacing=1.1)
+text(s, MARGIN, 3.45, 12.0, 1.0, "One threat, three real cases, three company defenses", size=21, color=SOFT, spacing=1.1)
 text(s, MARGIN, 4.85, 12.0, 1.4, ["Ruthvik Nath Bandari",
                                     "AAI6680: AI for Cybersecurity · Northeastern University · Mimoza Dimodugno, PhD", DATE],
      size=16, color=SOFT, after=4)
@@ -168,102 +167,108 @@ three major companies defend their AI, how the defenses compare, and how anomaly
 # ---- slide 2: the threat ------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK)
 header(s, "The threat: tricking AI into the wrong decision", "Threat and impact")
-TECH = [("Evasion", "Altered input fools a trained model (a sign, an image)", ACCENT),
-        ("Poisoning", "Corrupted training data or model components", TEAL),
+TECH = [("Evasion", "Altered input fools a model", ACCENT),
+        ("Poisoning", "Corrupted training data or model", TEAL),
         ("Prompt injection", "Hidden instructions hijack an AI assistant", RED),
-        ("Deepfakes", "AI-faked faces and voices fool people and checks", GOLD)]
+        ("Deepfakes", "Faked faces and voices fool people", GOLD)]
 for i, (t_, d_, c_) in enumerate(TECH):
     x = MARGIN + i * 3.07
-    rect(s, x, 1.85, 2.87, 1.55, LIGHT, shape=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.06)
+    rect(s, x, 1.85, 2.87, 1.3, LIGHT, shape=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.06)
     rect(s, x, 1.85, 2.87, 0.08, c_)
     text(s, x + 0.2, 2.05, 2.5, 0.4, t_, size=17, color=c_, bold=True, after=0)
-    text(s, x + 0.2, 2.5, 2.5, 0.85, d_, size=13, color=INK, after=0)
-stat(s, MARGIN, 3.75, 3.9, "US$25 million", "lost in one deepfake video call, Hong Kong, January 2024", RED)
-stat(s, MARGIN + 4.12, 3.75, 3.9, "US$40 billion", "projected US fraud losses enabled by generative AI by 2027 (32% a year)", RED)
-stat(s, MARGIN + 8.24, 3.75, 3.9, "40+ million", "vehicles use the camera that a strip of tape fooled", ACCENT)
-text(s, MARGIN, 5.45, 12.1, 1.2, [
-    "**Most exposed industries:** autonomous vehicles (safety), finance (money moved on a faked instruction) and "
-    "healthcare (life-critical model decisions).",
-], size=15, color=INK)
-footer(s, "Sources: Lalchand et al. (2024); Povolny & Trivedi (2020); Parisi (2019, Ch. 10).", 2)
-notes(s, """An adversarial attack makes an AI system decide wrongly on purpose. The four techniques in the brief are evasion,
-where a crafted input fools a trained model; poisoning, where the training data or model is corrupted; prompt injection,
-where hidden instructions take over an AI assistant; and deepfakes, where AI-generated faces and voices impersonate real
-people. The impact is financial. In January 2024 one deepfake video call cost a Hong Kong firm 25 million US dollars, and
-Deloitte projects that generative AI could push US fraud losses to 40 billion dollars by 2027, growing 32 percent a year.
-The camera fooled by tape in the McAfee test is used in more than 40 million vehicles. Deepfake fraud is the fastest-growing
-technique against people, and prompt injection is the main attack on AI assistants. The most exposed industries are autonomous
-vehicles, finance and healthcare, because a single wrong decision there costs lives or money.""")
+    text(s, x + 0.2, 2.5, 2.5, 0.6, d_, size=13, color=INK, after=0)
+stat(s, MARGIN, 3.5, 3.9, "US$25 million", "lost in one deepfake video call (Hong Kong, 2024)", RED)
+stat(s, MARGIN + 4.12, 3.5, 3.9, "US$40 billion", "projected US fraud losses from generative AI by 2027", RED)
+stat(s, MARGIN + 8.24, 3.5, 3.9, "+700%", "deepfake incidents in fintech in 2023", ACCENT)
+bullets(s, MARGIN, 5.15, 12.1, 1.6, [
+    "**Used most:** deepfake fraud against people, and prompt injection against AI assistants, the attack Google, "
+    "Microsoft and Meta now build defenses for.",
+    "**Most exposed:** autonomous vehicles, finance and, wherever models make clinical calls, healthcare.",
+], size=15, after=6)
+footer(s, "Sources: Lalchand et al. (2024); Google GenAI Security Team (2025); Parisi (2019, Ch. 10).", 2)
+notes(s, """An adversarial attack makes an AI system decide wrongly on purpose. The four techniques are evasion, where a
+crafted input fools a trained model; poisoning, where the training data or model is corrupted; prompt injection, where
+hidden instructions take over an AI assistant; and deepfakes, where AI-generated faces and voices impersonate real people.
+The impact is financial. In January 2024 one deepfake video call cost a Hong Kong firm 25 million US dollars. Deloitte
+projects that generative AI could push US fraud losses to 40 billion dollars by 2027, growing 32 percent a year, and
+reports that deepfake incidents in fintech rose 700 percent in 2023. The techniques used most are deepfake fraud against
+people and prompt injection against AI assistants, which is the attack Google, Microsoft and Meta now build dedicated
+defenses for. The most exposed industries are autonomous vehicles and finance, and healthcare wherever models make
+clinical decisions.""")
 
 # ---- slide 3: real cases -------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK)
 header(s, "Three real attacks that made headlines", "Step 1 · case studies")
 cw = 3.95
-case_card(s, MARGIN, 1.8, cw, 3.75, ACCENT, "Autonomous vehicles · evasion", "Tesla: tape on a speed sign", [
-    ("How:", "5 cm of black tape on a 35 mph sign made the MobilEye camera read 85."),
-    ("Impact:", "The car began accelerating toward 85 mph; the camera is in 40+ million vehicles."),
-    ("Outcome:", "Newer cameras handle it; older cars were not updated."),
+case_card(s, MARGIN, 1.8, cw, 3.55, ACCENT, "Autonomous vehicles · evasion", "Tesla: tape on a speed sign", [
+    ("How:", "About 5 cm of tape made the MobilEye camera read 35 mph as 85."),
+    ("Impact:", "The car began accelerating toward 85 mph."),
+    ("Outcome:", "A 2020 camera seemed immune; vulnerable ones remain in many Teslas."),
 ])
-case_card(s, MARGIN + cw + 0.18, 1.8, cw, 3.75, RED, "Finance · deepfake", "Hong Kong: a fake CFO on video", [
-    ("How:", "An employee joined a video call where the CFO and colleagues were all deepfakes."),
-    ("Impact:", "**US$25 million** sent to the fraudsters."),
-    ("Outcome:", "Money lost; the firm and its staff were tricked, not its IT systems."),
+case_card(s, MARGIN + cw + 0.18, 1.8, cw, 3.55, RED, "Finance · deepfake", "Hong Kong: a fake CFO on video", [
+    ("How:", "Every other person on the video call was a deepfake."),
+    ("Impact:", "**US$25 million** sent to fraudsters."),
+    ("Lesson:", "A call-back check would have stopped it."),
 ])
-case_card(s, MARGIN + 2 * (cw + 0.18), 1.8, cw, 3.75, GOLD, "Enterprise AI · prompt injection", "EchoLeak: Microsoft 365 Copilot", [
-    ("How:", "A crafted email could make Copilot leak data with zero clicks."),
-    ("Impact:", "Rated **9.3 Critical** (CVSS)."),
-    ("Outcome:", "Microsoft fixed it server-side; no exploitation was reported."),
+case_card(s, MARGIN + 2 * (cw + 0.18), 1.8, cw, 3.55, GOLD, "Enterprise AI · prompt injection", "Microsoft 365 Copilot", [
+    ("How:", "Injected instructions could make Copilot disclose data, with no user interaction."),
+    ("Impact:", "Rated **9.3 Critical**."),
+    ("Stopped:", "Microsoft fixed it server-side; no exploitation."),
 ])
-text(s, MARGIN, 5.8, 12.1, 0.3, "WHY THEY MADE HEADLINES", size=12, color=RED, bold=True, after=0)
-text(s, MARGIN, 6.15, 12.1, 0.6, "None needed a break-in: each fooled a trusted AI, or a person, with input crafted for it.",
+text(s, MARGIN, 5.6, 12.1, 0.3, "WHY THEY MADE HEADLINES", size=12, color=RED, bold=True, after=0)
+text(s, MARGIN, 5.95, 12.1, 0.6, "None needed a break-in: each fooled a trusted AI, or a person, with crafted input.",
      size=15, color=INK)
 footer(s, "Sources: Povolny & Trivedi (2020); Lalchand et al. (2024); Microsoft Security Response Center (2025).", 3)
-notes(s, """Three cases show the threat across industries. In 2020, McAfee researchers put about two inches of black tape on a
-35 mile-per-hour sign; the MobilEye camera on a 2016 Tesla read it as 85, and with cruise control on the car began
-accelerating toward 85 before the researchers braked. That camera is in more than 40 million vehicles. In January 2024, an
-employee of a Hong Kong firm joined a video call in which the chief financial officer and other colleagues were deepfakes,
-and sent 25 million US dollars to the fraudsters. In June 2025, Microsoft disclosed
-EchoLeak, a critical prompt-injection flaw rated 9.3 in which a crafted email could make Microsoft 365 Copilot leak data
-without the user clicking anything. Microsoft fixed it on the server side, and no exploitation was reported, which makes it an
-example of an attack stopped before it caused damage.""")
+notes(s, """Three cases show the threat across industries. In 2020, McAfee researchers put about two inches of black tape on
+a 35 mile-per-hour sign; the MobilEye EyeQ3 camera on a 2016 Tesla read it as 85, and with cruise control on the car began
+accelerating toward 85 before the researchers braked. A 2020 camera did not appear vulnerable in limited tests, but McAfee
+notes the vulnerable camera remains in a sizeable share of Teslas. In January 2024, an employee of a Hong Kong firm joined
+a video call in which the chief financial officer and other colleagues were deepfakes, and sent 25 million US dollars to
+the fraudsters; in my view a call-back check on a known number would have stopped it. In June 2025, Microsoft disclosed a
+critical prompt-injection flaw in Microsoft 365 Copilot, CVE-2025-32711, rated 9.3, that needed no user interaction.
+Microsoft fully mitigated it on the server side and reported no exploitation, so this attack was stopped before it caused
+damage.""")
 
 # ---- slide 4: corporate defenses ----------------------------------------------------------------
 s = prs.slides.add_slide(BLANK)
 header(s, "How Microsoft, Google and Meta defend their AI", "Step 2 · corporate defenses")
-case_card(s, MARGIN, 1.8, cw, 3.55, ACCENT, "Microsoft · red teaming", "Attack it before attackers do", [
+case_card(s, MARGIN, 1.8, cw, 2.9, ACCENT, "Microsoft · red teaming", "Attack it before attackers do", [
     ("", "Red-teamed **100+** generative AI products."),
-    ("", "Lessons: attacks need no gradients, humans stay crucial, security is never finished."),
+    ("", "Humans stay crucial; the work is never finished."),
 ])
-case_card(s, MARGIN + cw + 0.18, 1.8, cw, 3.55, TEAL, "Google · adversarial training", "Layered defense for Gemini", [
-    ("", "Training on adversarial data “significantly enhanced” resistance to prompt injection."),
-    ("", "Plus ML classifiers, link redaction and user confirmation."),
+case_card(s, MARGIN + cw + 0.18, 1.8, cw, 2.9, TEAL, "Google · adversarial training", "Layered defense for Gemini", [
+    ("", "Training on adversarial data “significantly enhanced” its prompt-injection defenses."),
+    ("", "Plus classifiers and user confirmation."),
 ])
-case_card(s, MARGIN + 2 * (cw + 0.18), 1.8, cw, 3.55, RED, "Meta · open guardrails", "LlamaFirewall for AI agents", [
+case_card(s, MARGIN + 2 * (cw + 0.18), 1.8, cw, 2.9, RED, "Meta · open guardrails", "LlamaFirewall for AI agents", [
     ("", "**PromptGuard 2** detects jailbreaks; **AlignmentCheck** audits agent reasoning."),
-    ("", "**CodeShield** blocks insecure generated code."),
+    ("", "**CodeShield** blocks insecure code."),
 ])
-text(s, MARGIN, 5.55, 12.1, 0.3, "WHAT IS PROVING MOST EFFECTIVE", size=12, color=TEAL, bold=True, after=0)
-text(s, MARGIN, 5.9, 12.1, 0.8, "**Layers, not one fix:** adversarial training + input/output classifiers + continuous "
-     "red teaming + a human check before money moves.", size=15, color=INK)
+text(s, MARGIN, 4.95, 6.0, 0.3, "HOW THEY TEST", size=12, color=ACCENT, bold=True, after=0)
+text(s, MARGIN, 5.3, 5.9, 1.4, "Red teams and automated attack tools probe models before release, then again after "
+     "every change.", size=15, color=INK)
+text(s, 7.0, 4.95, 5.75, 0.3, "WHAT IS PROVING MOST EFFECTIVE", size=12, color=TEAL, bold=True, after=0)
+text(s, 7.0, 5.3, 5.75, 1.4, "**Layers, not one fix.** Microsoft stopped the Copilot flaw before exploitation; "
+     "deepfake payments need a human check.", size=15, color=INK)
 footer(s, "Sources: Bullwinkel et al. (2025); Google GenAI Security Team (2025); Chennabasappa et al. (2025).", 4)
-notes(s, """Industry leaders use three complementary defenses. Microsoft's AI Red Team has attacked more than 100 of its own
-generative AI products before release; its lessons are that attackers do not need gradients or deep math to break a
-system, that automation helps but human testers remain crucial, and that the work is never complete. That is how companies
-test for vulnerabilities. Google defends Gemini with layers, and reports that training the model on adversarial examples
-of prompt injection significantly improved its resistance, backed by machine learning classifiers that detect malicious
-instructions, removal of suspicious links and asking the user to confirm risky actions. Meta released LlamaFirewall as an
-open-source guardrail for AI agents, with PromptGuard 2 to detect jailbreaks, an alignment check that audits the agent's
-reasoning, and CodeShield to block insecure code. Across all three, the message is the same: no single defense is
-enough, so the most effective strategy is layered.""")
+notes(s, """Industry leaders use complementary defenses. Microsoft's AI Red Team has attacked more than 100 of its own
+generative AI products; its lessons are that attackers do not need gradients to break a system, that automation helps but
+human testers remain crucial, and that the work is never complete. That is how companies test for vulnerabilities: red
+teams and automated tools attack the model before release and after every change. Google defends Gemini in layers and
+reports that training the model on adversarial prompt-injection data significantly enhanced its defenses, backed by
+classifiers that detect malicious instructions, redaction of suspicious links and user confirmation of risky actions. Meta
+released LlamaFirewall, an open-source guardrail for AI agents, with PromptGuard 2 to detect jailbreaks, AlignmentCheck to
+audit the agent's reasoning, and CodeShield to block insecure code. Across all three, no single defense is enough, so the
+most effective strategy is layered, and the Copilot case shows it can stop an attack before harm.""")
 
 # ---- slide 5: industry comparison chart -----------------------------------------------------------
 s = prs.slides.add_slide(BLANK)
 header(s, "Industry comparison: attack types vs. defense strategies", "Comparison chart")
 COLS = ["Adversarial training", "Red teaming & testing", "Input/output classifiers", "Anomaly detection", "Human verification"]
-ROWS = [("Evasion", "Autonomous vehicles", ["●", "●", "◐", "●", "—"]),
-        ("Poisoning", "Healthcare, finance", ["◐", "●", "—", "●", "◐"]),
-        ("Prompt injection", "Enterprise AI assistants", ["●", "●", "●", "◐", "●"]),
-        ("Deepfakes", "Finance", ["—", "◐", "◐", "●", "●"])]
+ROWS = [("Evasion", "Autonomous vehicles", "PSPSN"),
+        ("Poisoning", "Any model that retrains", "PSNSP"),
+        ("Prompt injection", "Enterprise AI assistants", "SSSPS"),
+        ("Deepfakes", "Finance", "NPPPS")]
 x0, y0, c0w, c1w, cw_, rh = MARGIN, 1.75, 2.15, 2.45, 1.5, 0.74
 rect(s, x0, y0, c0w + c1w + 5 * cw_, 0.75, NAVY)
 text(s, x0 + 0.15, y0 + 0.15, c0w - 0.2, 0.5, "Attack type", size=13, color=WHITE, bold=True, anchor=MSO_ANCHOR.MIDDLE)
@@ -271,7 +276,23 @@ text(s, x0 + c0w + 0.1, y0 + 0.15, c1w - 0.2, 0.5, "Industry most hit", size=13,
 for j, c in enumerate(COLS):
     text(s, x0 + c0w + c1w + j * cw_ + 0.05, y0 + 0.08, cw_ - 0.1, 0.6, c, size=12, color=WHITE, bold=True,
          align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, spacing=1.0, after=0)
-SYM = {"●": (TEAL, "Strong"), "◐": (GOLD, "Partial"), "—": (GREY, "Little")}
+
+
+def rating(slide, cx, cy, kind, d=0.3):
+    """S = strong (filled circle), P = partial (ring), N = little effect (short grey bar)."""
+    if kind == "N":
+        rect(slide, cx - 0.15, cy - 0.025, 0.3, 0.05, GREY)
+        return
+    o = slide.shapes.add_shape(MSO_SHAPE.OVAL, Inches(cx - d / 2), Inches(cy - d / 2), Inches(d), Inches(d))
+    o.shadow.inherit = False
+    o.line.color.rgb = TEAL if kind == "S" else GOLD
+    o.line.width = Pt(2.5)
+    if kind == "S":
+        o.fill.solid(); o.fill.fore_color.rgb = TEAL
+    else:
+        o.fill.background()
+
+
 for i, (atk, ind, vals) in enumerate(ROWS):
     y = y0 + 0.75 + i * rh
     if i % 2 == 0:
@@ -279,61 +300,62 @@ for i, (atk, ind, vals) in enumerate(ROWS):
     text(s, x0 + 0.15, y + 0.1, c0w - 0.2, rh - 0.2, atk, size=15, color=NAVY, bold=True, anchor=MSO_ANCHOR.MIDDLE)
     text(s, x0 + c0w + 0.1, y + 0.1, c1w - 0.2, rh - 0.2, ind, size=13, color=INK, anchor=MSO_ANCHOR.MIDDLE)
     for j, v in enumerate(vals):
-        text(s, x0 + c0w + c1w + j * cw_, y + 0.1, cw_, rh - 0.2, v, size=22, color=SYM[v][0], bold=True,
-             align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, after=0)
-ly = y0 + 0.75 + 4 * rh + 0.15
-text(s, x0, ly, 12.1, 0.4, "**●** strong fit   **◐** partial fit   **—** little effect     "
-     "Author's assessment from the cases and company defenses on slides 3–4.", size=12, color=MUTED)
-text(s, x0, ly + 0.45, 12.1, 0.6, "**Takeaway:** only red teaming and anomaly detection help against every attack type; deepfakes are "
-     "stopped by process (call-back checks), not by retraining.", size=14, color=INK)
+        rating(s, x0 + c0w + c1w + j * cw_ + cw_ / 2, y + rh / 2, v)
+ly = y0 + 0.75 + 4 * rh + 0.2
+for k, (kind, label) in enumerate([("S", "strong fit"), ("P", "partial fit"), ("N", "little effect")]):
+    rating(s, x0 + 0.15 + k * 1.75, ly + 0.15, kind, d=0.2)
+    text(s, x0 + 0.35 + k * 1.75, ly, 1.4, 0.3, label, size=12, color=MUTED)
+text(s, x0 + 5.4, ly, 6.7, 0.3, "Author's assessment from the cases and defenses on slides 3–4.", size=12, color=MUTED, italic=True)
+text(s, x0, ly + 0.5, 12.1, 0.6, "**Takeaway:** in this assessment, red teaming and anomaly detection help against every "
+     "attack type; deepfakes need process checks.", size=14, color=INK)
 footer(s, "Sources: Google GenAI Security Team (2025); Bullwinkel et al. (2025); Chennabasappa et al. (2025); Parisi (2019, Ch. 5).", 5)
-notes(s, """This chart compares the four attack types with five defense strategies, and names the industry each attack hits
-hardest. Evasion attacks, like the tape on the speed sign, matter most for autonomous vehicles; adversarial training and
-robustness testing make the model harder to fool, and anomaly detection can flag an input that does not fit, such as an
-85 mile-per-hour reading in a 35 zone. Poisoning threatens healthcare and finance models that retrain on new data; testing
-and screening training data for outliers help most. Prompt injection threatens enterprise AI assistants, where every
-layer helps, which is why Google and Meta stack them. Deepfakes hit finance; the model cannot be retrained against them,
-so anomaly checks on payments and human call-back verification work best. The ratings are my assessment from the cases
-and the companies' published defenses.""")
+notes(s, """This chart compares the four attack types with five defense strategies and names the industry each attack hits
+hardest. The ratings are my assessment from the cases and the companies' published defenses. Evasion, like the tape on the
+speed sign, matters most for autonomous vehicles; red teaming and anomaly detection, which can flag an 85 reading in a 35
+zone, fit best, while adversarial training only partly helps because attackers adapt. Poisoning threatens any model that
+retrains on new data; testing and screening new data for outliers help most. Prompt injection threatens enterprise AI
+assistants, where every layer helps, which is why Google and Meta stack them. Deepfakes hit finance; a model cannot be
+retrained against them, so human call-back verification works best.""")
 
 # ---- slide 6: Chapter 5 + governance trend -------------------------------------------------------
 s = prs.slides.add_slide(BLANK)
 header(s, "Applying Chapter 5, and the governance trend that requires it", "AI concepts · current trend")
 text(s, MARGIN, 1.8, 6.0, 0.3, "CHAPTER 5: ANOMALY DETECTION AS A DEFENSE", size=12, color=TEAL, bold=True, after=0)
-text(s, MARGIN, 2.15, 6.0, 0.6, "Model what *normal* looks like, then flag what does not fit.", size=15, color=INK, italic=True)
+text(s, MARGIN, 2.15, 6.0, 0.6, "Learn what *normal* looks like; flag what does not fit.", size=15, color=INK, italic=True)
 bullets(s, MARGIN, 2.7, 6.0, 3.9, [
-    "**Inputs:** a camera reading of 85 mph on a 35 mph road is out of distribution → slow down, ask the driver.",
-    "**Payments:** a large, urgent transfer right after one video call is unusual → hold and call back.",
-    "**Training data:** outliers in new data are screened before retraining → stops poisoning.",
-    "**AI usage:** an assistant suddenly sending data to an outside link → block it.",
-], size=14.5, after=9, marker_color=TEAL)
-rect(s, 7.0, 1.8, 5.75, 4.85, LIGHT, shape=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.04)
+    "**Inputs:** 85 mph on a 35 mph road is out of range → slow down.",
+    "**Payments:** a large, urgent transfer after one video call → hold and call back.",
+    "**Training data:** screen outliers before retraining → blocks poisoning.",
+    "**AI agents:** an assistant suddenly sending data outside → block it.",
+], size=15, after=10, marker_color=TEAL)
+rect(s, 7.0, 1.8, 5.75, 3.6, LIGHT, shape=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.04)
 text(s, 7.3, 2.0, 5.2, 0.3, "TREND: AI GOVERNANCE MAKES ROBUSTNESS LAW", size=12, color=ACCENT, bold=True, after=0)
-text(s, 7.3, 2.4, 5.2, 4.2, [
-    "The **EU AI Act, Article 15**, requires high-risk AI to be “resilient against attempts by unauthorised third "
-    "parties to alter their use, outputs or performance.”",
-    "It names data poisoning, model poisoning and adversarial examples, and asks for measures to “prevent, detect, "
+text(s, 7.3, 2.4, 5.2, 4.0, [
+    "**EU AI Act, Article 15:** high-risk AI must be “resilient against attempts by unauthorised third parties to "
+    "alter their use, outputs or performance.”",
+    "It names data poisoning, model poisoning and adversarial examples, and requires measures to “prevent, detect, "
     "respond to” them.",
-    "**Why it matters:** robustness testing and anomaly detection move from best practice to legal duty.",
-], size=14.5, color=INK, after=10)
+    "**Effect:** robustness testing and anomaly detection become legal duties.",
+], size=15, color=INK, after=12)
 footer(s, f"Sources: {CH5}; Regulation (EU) 2024/1689 (2024, Art. 15).", 6)
 notes(s, """Chapter 5 of the textbook, Network Anomaly Detection with AI, teaches a model of normal behaviour that flags
 anything that does not fit. The same idea is a practical defense against adversarial attacks. A speed reading of 85 on a
-35 road is out of distribution, so the car should slow down and alert the driver. A large, urgent transfer
-right after one video call is unusual, so the payment should be held and confirmed by phone. Outliers in new training data can
-be screened before retraining, which blocks poisoning, and an AI assistant that suddenly sends data to an outside link can
-be stopped. The current trend is AI governance. Article 15 of the EU AI Act requires high-risk AI systems to resist
-attempts to alter their outputs, names data poisoning, model poisoning and adversarial examples, and requires measures to
-prevent, detect and respond to them. Together they turn robustness
-testing and anomaly detection from good practice into a legal duty.""")
+35 road is out of range, so the car should slow down and alert the driver. A large, urgent transfer right after one video
+call is unusual, so the payment should be held and confirmed by phone. Outliers in new training data can be screened
+before retraining, which blocks poisoning, and an AI assistant that suddenly sends data outside can be stopped. The current
+trend is AI governance. Article 15 of the EU AI Act requires high-risk AI systems to resist attempts to alter their
+outputs, names data poisoning, model poisoning and adversarial examples, and requires measures to prevent, detect and
+respond to them. That turns robustness testing and anomaly detection from good practice into a legal duty for high-risk
+systems.""")
 
 # ---- slide 7: reflection + references --------------------------------------------------------------
 s = prs.slides.add_slide(BLANK)
 header(s, "Reflection and references", "What I learned · APA 7th edition")
 rect(s, MARGIN, 1.7, 12.15, 0.95, LIGHT, shape=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.05)
 text(s, MARGIN + 0.3, 1.82, 11.6, 0.8, [
-    "**Reflection.** In Modules 3–5 I built detectors and trusted their accuracy; this module showed that the detector "
-    "itself is a target. I want to build AI defenses that are red-teamed before release and backed by anomaly checks.",
+    "**Reflection.** In Modules 3–5 I built an anomaly detector, a fraud model and a phishing filter and judged them by "
+    "accuracy; this module showed the detector itself is a target. I want to build AI defenses that are red-teamed before "
+    "release, watched by anomaly checks, and that let a human confirm high-stakes actions.",
 ], size=14, color=INK)
 REFS = [
     "Bullwinkel, B., Minnich, A., Chawla, S., Lopez, G., Pouliot, M., Maxwell, W., de Gruyter, J., Pratt, K., Qi, S., Chikanov, N., Lutz, R., Dheekonda, R. S. R., Jagdagdorj, B.-E., Kim, E., Song, J., Hines, K., Jones, D., Severi, G., Lundeen, R., . . . Russinovich, M. (2025). *Lessons from red teaming 100 generative AI products* (arXiv:2501.07238). arXiv. https://arxiv.org/abs/2501.07238",
@@ -343,7 +365,7 @@ REFS = [
     "Microsoft Security Response Center. (2025, June 11). *CVE-2025-32711: M365 Copilot information disclosure vulnerability*. https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-32711",
     "Parisi, A. (2019). *Hands-on artificial intelligence for cybersecurity: Implement smart AI systems for preventing cyber attacks and detecting threats and network anomalies*. Packt Publishing.",
     "Povolny, S., & Trivedi, S. (2020, February 19). *Model hacking ADAS to pave safer roads for autonomous vehicles*. McAfee Blogs. https://www.mcafee.com/blogs/other-blogs/mcafee-labs/model-hacking-adas-to-pave-safer-roads-for-autonomous-vehicles/",
-    "Regulation (EU) 2024/1689 of the European Parliament and of the Council of 13 June 2024 laying down harmonised rules on artificial intelligence. (2024). *Official Journal of the European Union*, L 2024/1689. http://data.europa.eu/eli/reg/2024/1689/oj",
+    "Regulation (EU) 2024/1689 of the European Parliament and of the Council of 13 June 2024 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act). (2024). *Official Journal of the European Union*, L 2024/1689. http://data.europa.eu/eli/reg/2024/1689/oj",
 ]
 box = text(s, MARGIN, 2.85, SW - 2 * MARGIN, 4.0, REFS, size=11, color=INK, after=4, spacing=1.0)
 for p in box.text_frame.paragraphs:
